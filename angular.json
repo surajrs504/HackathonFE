@@ -64,10 +64,15 @@
           "configurations": {
             "production": {
               "buildTarget": "emailAutomationManagementFE:build:production"
+              
             },
             "development": {
               "buildTarget": "emailAutomationManagementFE:build:development"
-            }
+            },
+            "options": {
+             "host": "0.0.0.0",
+              "port": 5000
+        }
           },
           "defaultConfiguration": "development"
         },
