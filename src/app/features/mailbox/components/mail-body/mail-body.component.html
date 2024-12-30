@@ -1,0 +1,166 @@
+<div class="mail-body-subject-container" *ngIf="selectedMail">
+  <div class="mail-body-subject">{{ selectedMail["subject"] }}</div>
+</div>
+
+<div
+  class="mail-reply-body-details-container"
+  *ngIf="selectedMail && isMailReply"
+>
+  <div class="mail-reply-body-details">
+    <div class="mail-reply-body-details-ids">
+      <div class="mail-reply-body-details-ids-icons">
+        <button
+          class="m-1 mail-reply-body-details-ids-send button-size"
+          mat-stroked-button
+        >
+          Send <mat-icon>send</mat-icon>
+        </button>
+      </div>
+
+      <div class="mail-reply-body-details-ids-names px-3">
+        <div
+          class="mail-reply-body-details-ids-names-sender d-flex justify-content-between align-items-center"
+        >
+          <div>To: {{ getToRecepients() }}</div>
+          <div class="d-flex">
+            <div class="px-2">
+              <span class="px-1">
+                <img src="assets/icons/common/delete.svg"
+              /></span>
+            </div>
+            <div class="px-2">
+              <span> <img src="assets/icons/common/flag.svg" /></span>
+            </div>
+            <div class="px-2">
+              <mat-icon
+                mat-icon
+                [fontIcon]="'format_color_fill'"
+                (click)="toggleToolbar()"
+              >
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-100 h-85 px-3" #toolbar>
+      <form [formGroup]="form">
+        <quill-editor
+          style="height: 90%; width: 100%"
+          [(ngModel)]="emailContent"
+          formControlName="html"
+        ></quill-editor>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="mail-body-details-container" *ngIf="selectedMail">
+  <div class="mail-body-details">
+    <div class="mail-body-details-ids">
+      <div class="mail-body-details-ids-icon">
+        <div
+          class="mail-body-details-ids-icon-body"
+          [style.background-color]="getLetterColor(getFirstLetter())"
+        >
+          <div class="mail-body-details-ids-icon-body-letter">
+            {{ getFirstLetter() }}
+          </div>
+        </div>
+      </div>
+      <div class="mail-body-details-ids-names">
+        <div
+          class="mail-body-details-ids-names-sender d-flex justify-content-between align-items-center"
+        >
+          <div>{{ selectedMail["sender"]["emailAddress"]["name"] }}</div>
+          <div class="d-flex">
+            <div class="px-2">
+              <span class="px-1">
+                <img
+                  (click)="handleDeleteMail(selectedMail)"
+                  src="assets/icons/common/delete.svg"
+              /></span>
+            </div>
+            <div class="px-2">
+              <span> <img src="assets/icons/common/flag.svg" /></span>
+            </div>
+            <div *ngIf="showEditOption" class="px-2">
+              <mat-icon
+                mat-icon
+                [fontIcon]="'format_color_fill'"
+                (click)="toggleToolbar()"
+              >
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mail-body-details-ids-names-to d-flex justify-content-between"
+        >
+          <span>To: {{ getToRecepients() }}</span
+          ><span>{{ selectedMail["sentDateTime"] }}</span>
+        </div>
+        <div class="mail-body-details-ids-names-cc">
+          Cc: {{ getCCRecepients() }}
+        </div>
+      </div>
+    </div>
+    <div class="mail-body-details-body h-90">
+      <mat-tab-group
+        [classList]="'w-100'"
+        mat-stretch-tabs
+        (selectedIndexChange)="handleTabChange($event)"
+        class="example-stretched-tabs"
+      >
+        <mat-tab label="Mail"
+          ><div
+            class="p-4 w- overflow-x-auto"
+            [innerHTML]="selectedMail['body']['content']"
+          ></div>
+        </mat-tab>
+        <mat-tab label="Summary">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem at
+          unde, recusandae laborum reiciendis expedita accusamus molestias
+          dolorem delectus illum sit a, repellendus ipsa ipsam officiis enim
+          provident earum sequi?
+          <div class="loader position-absolute z-1" *ngIf="isLoading">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="GenAI-Response">
+          <div class="loader position-absolute z-1" *ngIf="isLoading">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <form [formGroup]="form">
+            <div class="w-100 h-85 px-3" #toolbar>
+              <form [formGroup]="form">
+                <quill-editor
+                  style="height: 90%; width: 100%"
+                  [(ngModel)]="emailContent"
+                  formControlName="html"
+                ></quill-editor>
+              </form>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="mail-body-details-footer">
+      <div class="w-90">
+        <button
+          class="m-2 button-size"
+          mat-stroked-button
+          (click)="handleReplyMail()"
+        >
+          Reply <mat-icon>reply</mat-icon>
+        </button>
+        <!-- <button class="m-2 button-size" mat-raised-button>Reply all</button>
+        <button class="m-2 button-size" mat-raised-button>Forward</button> -->
+      </div>
+    </div>
+  </div>
+</div>

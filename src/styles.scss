@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../src/app/shared/styles/_base";
+@import "../src/app/shared/styles/_general";
+@import "../src/app/shared/styles/_utilities";
+@import "../src/app/shared/styles/_variables";
+@import "../src/app/shared/styles/materialOverride";
+@import url("bootstrap/dist/css/bootstrap.min.css");
+@import "quill/dist/quill.core.css";
+@import "quill/dist/quill.bubble.css";
+@import "quill/dist/quill.snow.css";
+
+html,
+body {
+  height: 100%;
+}
+.ql-container.ql-snow {
+  border: unset;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.mat-mdc-tab-labels {
+  justify-content: space-evenly !important;
+}

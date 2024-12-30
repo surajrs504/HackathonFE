@@ -1,0 +1,29 @@
+<div class="mail-list-cell d-flex w-100">
+  <div class="mail-list-cell-icon-container">
+    <div *ngIf="isSelectAllEnabled; else profileIcon">
+      <mat-checkbox [checked]="isSelected" color="primary" class="example-margin"></mat-checkbox>
+    </div>
+    <ng-template #profileIcon>
+      <div  class="mail-list-cell-icon-body"  [style.background-color]="getLetterColor(getFirstLetter())">
+        <div class="mail-list-cell-icon-body-letter">{{ getFirstLetter() }}</div>
+      </div>
+    </ng-template>
+    
+   
+  </div>
+  <div class="mail-list-cell-body d-flex flex-column justify-content-center">
+    <div class="mail-list-cell-body-title d-flex justify-content-between">
+      <span>{{ cellDetail["sender"]["emailAddress"]["name"] }}</span
+      ><span>{{ getTime(cellDetail["sentDateTime"]) }}</span>
+    </div>
+    <div class="mail-list-cell-body-desc">{{ cellDetail["subject"] }}</div>
+  </div>
+  <div class="mail-list-cell-delete">
+    <div class="mail-list-cell-delete-icon h-100">
+      <!-- <mat-icon matTooltip="Delete"  mat-icon [fontIcon]="'delete'"> </mat-icon> -->
+      <span  class="px-1" >
+        <img (click)="handleDeleteMail(cellDetail)" src="assets/icons/common/delete.svg"
+      /></span>
+    </div>
+  </div>
+</div>

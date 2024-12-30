@@ -1,0 +1,111 @@
+@import "../../../../shared/styles/_variables.scss";
+.form-container-signin {
+    background-color: #150958 !important;
+    color: $color-white !important;
+    font-weight: 600;
+    height: 3rem;
+    border-radius: 9px;
+  }
+  
+  .outlook-btn {
+    font-weight: 600;
+    color: #635a5a !important;
+    background-color: $color-white;
+    border-color: #dccfcf !important;
+    height: 2.5rem;
+    border-radius: 9px;
+  }
+  
+  .grey-color {
+    color: #635a5a;
+  }
+  
+ 
+  .horizontal-line {
+    width: 36%;
+    border-width: 30px;
+    height: 1px;
+    background-color: black;
+    &-left {
+      position: absolute;
+      left: 0px;
+    }
+    &-right {
+      position: absolute;
+      right: 0px;
+    }
+  }
+  
+  .MSL-btn-label-container {
+    height: 2.2rem !important;
+    &-spinner {
+      width: 2.1rem !important;
+      height: 2.1rem !important;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+    }
+}
+
+.login-container {
+    &__form {
+      width: 85%;
+      font-family: "inter var";
+      &-title {
+        font-size: 1.8rem;
+        font-weight: 550;
+      }
+      &-desc {
+        font-size: 1rem;
+        color: $color-grey;
+      }
+      &-label {
+        color: #635a5a;
+        font-weight: 600;
+      }
+      &--input {
+        background-color: $color-white !important;
+      }
+      &-showPwd {
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        padding: 0px;
+      }
+    }
+    &__or {
+      font-size: 0.75rem;
+      color: #635a5a;
+      font-weight: 700;
+    }
+    &__info {
+      width: 55%;
+      font-family: sans-serif;
+      &-container {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+      }
+      &-logo {
+        width: 8rem;
+        height: 2.6rem;
+      }
+      &-title {
+        font-size: 1.7rem;
+        color: $color-white;
+        font-weight: 550;
+      }
+      &-desc {
+        font-size: 1rem;
+        color: $color-white;
+        font-weight: normal;
+      }
+      &-logo {
+        img {
+          margin: auto;
+          display: block;
+          width: 13rem;
+        }
+      }
+    }
+  }

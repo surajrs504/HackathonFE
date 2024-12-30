@@ -1,0 +1,60 @@
+<div class="w-100 h-100">
+  <!-- <mat-sidenav-container autosize [hasBackdrop]="false">
+    <mat-sidenav #sidenav mode="side" opened="isExpanded">
+      <div class="nav-header d-flex justify-content-between align-items-center">
+        <div class="app-logo d-flex justify-content-center align-items-center">
+          <img
+            *ngIf="isExpanded"
+            class="large-img"
+            src="../../../../../assets/images/NV-MAIL-LOGO.png"
+            alt=""
+          />
+          <img
+            *ngIf="!isExpanded"
+            class="small-img"
+            src="../../../../assets/images/novigoLogoSmall.png"
+            alt=""
+          />
+        </div>
+        <div (click)="isExpanded = !isExpanded">
+          <mat-icon
+            mat-list-icon
+            class="chevron-button"
+            [ngClass]="{ rotated: isExpanded }"
+            >chevron_right
+          </mat-icon>
+        </div>
+      </div>
+      <div class="sidenav-nav d-flex flex-column align-items-start my-2">
+        <div class="w-100">
+          <div
+            class="sidenav-nav-item cursor-pointer mx-2"
+            *ngFor="let data of menuItems"
+            [routerLinkActive]="['sidenav-highlighted']"
+          >
+            <a
+              class="sidenav-nav-link d-flex align-items-center"
+              [routerLink]="data.routeLink"
+              [ngStyle]="{
+                'justify-content': isExpanded ? 'flex-start' : 'center'
+              }"
+            >
+              <mat-icon mat-icon [fontIcon]="data.icon"> </mat-icon>
+              <span *ngIf="isExpanded" @fade class="sidenav-link-text">{{
+                data.title
+              }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav> -->
+
+    <!-- Content - rendered Content for the current router path into the <router-outlet>, e.g. /dashboard or /user-managment-->
+    <!-- <mat-sidenav-content class="fdt-sidenav-content"> -->
+      
+       
+        
+      <router-outlet></router-outlet>
+    <!-- </mat-sidenav-content>
+  </mat-sidenav-container> -->
+</div>

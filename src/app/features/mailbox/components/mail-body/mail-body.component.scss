@@ -1,0 +1,187 @@
+.mail-body {
+  &-subject-container {
+    padding: 0.25rem;
+  }
+  &-subject {
+    height: 3rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  }
+  &-details-container {
+    width: 100%;
+    padding: 0.25rem;
+  
+   
+   
+  }
+  &-details {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    .loader{
+      top: 40%;
+      left: 45%;
+    }
+    &-ids {
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      &-icon {
+        width: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-body {
+          width: 2rem;
+          background-color: #dedae1;
+          height: 2rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &-letter {
+            font-size: 1.5rem;
+
+          }
+        }
+      }
+      &-names {
+        width: 85%;
+        &-to {
+          font-size: 0.75rem;
+        }
+        &-sender {
+          font-weight: 600;
+          color: rgb(24, 115, 189);
+        }
+        &-cc {
+          font-size: 0.75rem;
+        }
+      }
+      &-options {
+        width: 35%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    &-body {
+      width: 100%;
+      display: flex;
+      padding-left: 2.5rem;
+      min-height: 20rem;
+    }
+    &-footer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-block: 1rem;
+    }
+  }
+}
+
+.mail-reply-body {
+  &-subject-container {
+    padding: 0.25rem;
+  }
+  &-subject {
+    height: 3rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+  }
+  &-details-container {
+    width: 100%;
+    height: 30rem;
+    padding: 0.25rem;
+  }
+  &-details {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    height: 100%;
+    &-ids {
+      height: 3rem;
+      border-bottom: 0.1rem solid #e9dddd;
+      display: flex;
+      align-items: center;
+      &-icons {
+        width: 15%;
+       
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-body {
+          width: 2rem;
+          background-color: #a6a2aa;
+          height: 2rem;
+          border-radius: 50%;
+        }
+      }
+      &-send{
+       
+        background-color: #4b9ce7 !important;
+        color: white !important;
+      }
+      &-names {
+        width: 85%;
+        &-to {
+          font-size: 0.75rem;
+        }
+        &-sender {
+          font-weight: 600;
+          color: rgb(24, 115, 189);
+        }
+        &-cc {
+          font-size: 0.75rem;
+        }
+      }
+      &-options {
+        width: 35%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    &-body {
+      width: 100%;
+      display: flex;
+      padding-left: 2.5rem;
+    }
+    &-footer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-block: 1rem;
+    }
+  }
+}
+
+.quill-toolbar {
+  display: block;
+}
+
+/* When the hide-toolbar class is added, the toolbar will be hidden */
+.hide-toolbar {
+  display: none;
+}
+
+.button-size{
+  height: 1.8rem;
+}
+
+

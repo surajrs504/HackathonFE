@@ -1,0 +1,198 @@
+<div class="main-container p-2">
+  <div class="header p-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      Mail Preference
+      <div class="px-1">
+        <span
+          matTooltip="Edit your mail preferecnce and curate your mail box to your choice"
+          class="px-1"
+        >
+          <img src="assets/icons/common/user_setting.svg"
+        /></span>
+      </div>
+    </div>
+    <div (click)="closeDialog()">
+      <mat-icon>close_small</mat-icon>
+    </div>
+  </div>
+  <div class="d-flex flex-column justify-content-center p-2">
+    <mat-tab-group
+      [classList]="'w-100'"
+      mat-stretch-tabs
+      class="example-stretched-tabs"
+    >
+      <mat-tab label="Group">
+        <div
+          class="py-3 group-list-container d-flex flex-column align-items-center h-100"
+        >
+          <div class="w-80">
+            <div class="dropdown d-flex justify-content-between">
+              <mat-form-field appearance="outline" class="w-60">
+                <input
+                  type="text"
+                  placeholder="Group"
+                  matInput
+                  [formControl]="groupListControl"
+                  [matAutocomplete]="auto"
+                  (selectionchange)="handleGroupSelection($event)"
+                />
+                <mat-autocomplete #auto="matAutocomplete">
+                  @for (option of filteredGroupOptions | async; track option) {
+                  <mat-option [value]="option">{{ option }} </mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+              <div class="d-flex justify-content-around">
+                <div class="px-1">
+                  <button
+                    *ngIf="groupListControl.value"
+                    mat-stroked-button
+                    (click)="handleGroupEdit()"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <div class="px-1">
+                  <button
+                    class="px-1"
+                    *ngIf="isGroupEdit"
+                    mat-stroked-button
+                    (click)="handleGroupEdit()"
+                  >
+                    Save
+                  </button>
+                </div>
+                <div class="px-1">
+                  <button
+                    class="px-1"
+                    *ngIf="!isGroupEdit"
+                    mat-stroked-button
+                    (click)="handleAddNewGroup()"
+                  >
+                    Add New
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-80">
+            <div class="textfield" *ngIf="isGroupEdit || isAddNewGroup">
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput placeholder="Placeholder" />
+                <mat-icon matSuffix>group_add</mat-icon>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label> Group Description</mat-label>
+                <textarea
+                  rows="8"
+                  [disabled]="!isGroupEdit"
+                  matInput
+                ></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="px-1 py-2">
+          <div>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>New Group Name</mat-label>
+              <input matInput placeholder="Placeholder" />
+              <mat-icon matSuffix>group_add</mat-icon>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>New Group Description</mat-label>
+              <textarea matInput></textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+        </div> -->
+        <div class="w-100 d-flex justify-content-around">
+        
+        </div>
+      </mat-tab>
+      <mat-tab label="Sub Group"
+        ><div class="px-1 py-3">
+          <div class="d-flex justify-content-between">
+            <div class="w-48">
+              <!-- <mat-form-field
+            class="example-full-width w-100"
+            appearance="outline"
+          >
+            <mat-label>Group</mat-label>
+            <input
+              type="text"
+              placeholder="Pick one"
+              aria-label="Number"
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              @for (option of filteredOptions | async; track option) {
+              <mat-option [value]="option">{{ option }} </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field> -->
+            </div>
+
+            <div class="w-48">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Sub Group Name</mat-label>
+                <input matInput placeholder="Placeholder" />
+                <mat-icon matSuffix>group_work</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="w-100 d-flex justify-content-center">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Sub Group Description</mat-label>
+              <textarea matInput></textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="w-100 d-flex justify-content-around">
+          <button
+            class="w-40"
+            color="secondary"
+            (click)="handleAddNewSubGroup()"
+            mat-stroked-button
+          >
+            Add
+          </button>
+          <button
+            class="w-40"
+            color="primary"
+            (click)="saveSubGroupChanges()"
+            mat-stroked-button
+          >
+            Save
+          </button>
+        </div>
+        <div class="subGroup-list-container">
+          <!-- <mat-form-field class="example-form-field w-100" appearance="outline"> -->
+          <mat-label>Sub Groups</mat-label>
+          <mat-chip-set aria-label="Fish selection">
+            <mat-chip *ngFor="let subGroup of subGroupList">
+              {{ subGroup }}
+              <button
+                matChipRemove
+                aria-label="'remove reactive form' + keyword"
+                (click)="handleRemoveSubGroup(subGroup)"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button></mat-chip
+            >
+          </mat-chip-set>
+          <!-- </mat-form-field> -->
+        </div></mat-tab
+      >
+    </mat-tab-group>
+  </div>
+</div>

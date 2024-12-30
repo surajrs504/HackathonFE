@@ -1,0 +1,92 @@
+@import "../../../../shared/styles/variables";
+mat-sidenav-container {
+  height: 100%;
+  mat-sidenav {
+    transition: all 0.5s ease;
+    
+  }
+  .chevron-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .chevron-button.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-header {
+  padding: 0.5rem 0rem;
+  border-bottom: 1px solid #c3c3c3;
+  margin: 0.5rem 1rem 0rem;
+}
+
+.app-logo {
+  .small-img {
+    width: 1.6rem;
+  }
+  .large-img {
+    width: 6.5rem;
+  }
+}
+
+.sidenav {
+  background: $color-white;
+  transition: all 0.5s ease;
+  width: 5rem;
+  box-shadow: 0.063rem 0 1.25rem 0 $color-gray-lighter;
+}
+
+.fdt-sidenav,
+.fdt-sidenav-content {
+  transition: all 0.5s ease;
+  position: relative;
+  z-index: 2;
+}
+
+
+.sidenav-nav {
+  transition: all 0.5s ease;
+  .sidenav-nav-item {
+    margin-bottom: 0.625rem;
+    .sidenav-nav-link {
+      height: 3rem;
+      padding: 1rem;
+      color: $color-grey-darker;
+      border-radius: 0.625rem;
+      text-align: start;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      .sidenav-link-icon {
+        font-size: 20px;
+        width: 1.5rem;
+        min-width: 1.5rem;
+        margin: 0 0.5rem;
+      }
+      .sidenav-link-text {
+        margin: 0.5rem;
+      }
+    }
+  }
+  .sidenav-nav-item:hover {
+    .sidenav-nav-link {
+      background-color: $color-white;
+      border-radius: 0px;
+      color: $color-primary;
+    }
+  }
+}
+
+.sidenav-highlighted {
+  background-color: #caecfc;
+  border-radius: 0.5rem;
+  .sidenav-link-icon {
+    color: $color-primary;
+  }
+  .sidenav-link-text {
+    color: $color-primary;
+  }
+}
+
+.main-header{
+    height: 3.8rem;
+}

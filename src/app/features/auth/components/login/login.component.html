@@ -1,0 +1,121 @@
+    <div class="login-container w-100 h-90 d-flex justify-content-center align-items-center" >
+        <div class="login-container__form">
+            <div class="signin-bg d-flex align-items-center justify-content-center">
+              <div class="d-flex w-100 h-100 align-items-center justify-content-center">
+                <div class="p-3 w-70">
+                  <div class="py-3 login-container__form-title text-center">
+                    Welcome
+                  </div>
+        
+                  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+                    <div class="form-container">
+                      <div
+                        class="mb-2 fdt-remove-line-ripple fdt-input-font fdt-input-border"
+                      >
+                        <div class="login-container__form-label">Email</div>
+                        <mat-form-field class="w-100">
+                          <input
+                            matInput
+                            class="login-container__form-input"
+                            placeholder="Enter your email"
+                            formControlName="email"
+                          />
+                          <mat-error *ngIf="!loginForm.controls.email.valid"
+                            >Please enter valid email id</mat-error
+                          >
+                        </mat-form-field>
+                      </div>
+        
+                      <div
+                        class="mb-2 fdt-remove-line-ripple fdt-input-font fdt-input-border"
+                      >
+                        <div class="login-container__form-label">Password</div>
+                        <mat-form-field class="w-100 d-flex align-items-center">
+                          <input
+                            matInput
+                            [type]="hidePwd ? 'password' : 'text'"
+                            placeholder="Enter your password"
+                            formControlName="password"
+                          />
+                          <button
+                            mat-icon-button
+                            matSuffix
+                            type="button"
+                            (click)="hidePwd = !hidePwd"
+                            [attr.aria-label]="'Hide password'"
+                            class="login-container__form-showPwd"
+                          >
+                            <!-- <mat-icon>
+                              <img
+                                class="w-100 h-100"
+                                src="../../../../../assets/logos/show_password.svg"
+                            /></mat-icon> -->
+                          </button>
+                          <mat-error *ngIf="!loginForm.controls.password.valid"
+                            >Please enter password</mat-error
+                          >
+                        </mat-form-field>
+                      </div>
+                      <button
+                        [disabled]="!loginForm.valid"
+                        mat-raised-button
+                        mat-button
+                        class="primary-btn-full form-container-signin"
+                      >
+                        Sign In
+                      </button>
+                    </div>
+                  </form>
+        
+                  <div
+                    class="d-flex position-relative pt-2 align-items-center justify-content-center"
+                  >
+                    <div class="horizontal-line horizontal-line-left"></div>
+                    <div class="px-2 login-container__or">or Login with</div>
+                    <div class="horizontal-line horizontal-line-right"></div>
+                  </div>
+        
+                  <div class="py-2">
+                    <button
+                      mat-stroked-button
+                      class="primary-btn-full outlook-btn"
+                      (click)="loginWithMS()"
+                    >
+                      <div
+                        class="d-flex align-items-center justify-content-center MSL-btn-label-container"
+                      >
+                        <div>
+                          <!-- <span class="px-1"
+                            ><img
+                              src="../../../../../assets/logos/microsoft_outlook.svg"
+                          /></span> -->
+                          Microsoft Entra
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="isMSAuthLoading"
+                        class="MSL-btn-label-container-spinner"
+                      >
+                        <div
+                          class="spinner-border text-primary"
+                          style="width: 100%; height: 100%"
+                          role="status"
+                        >
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                  <div class="no-account-text">
+                    Don't have an account ?
+                    <span class="no-account-text-signUp" (click)="navigateToSignUp()"
+                      >Sign Up</span
+                    >
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+    </div>
+   
