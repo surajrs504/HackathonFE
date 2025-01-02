@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import mail_data from '../../../core/data/mail_data.json'
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MailboxService {
-  constructor() {}
+  apiUrl=environment.apiUrl
+  constructor( private http :HttpClient) {}
 
   deleteSingleMail(mailDetails: any) {}
 
@@ -26,7 +29,7 @@ export class MailboxService {
   }
 
   getGroupList(){
-    return of(['Priority', 'Urgency', 'Client', 'Team', 'Project']);
+    return this.http.get(`${this.apiUrl}NVPreference/get_groups`)
   }
 
   getSubGroupList(){
@@ -34,7 +37,8 @@ export class MailboxService {
   }
 
   getMailList(){
-   return of(mail_data)
+  // return of(mail_data)
+  return this.http.get(`${this.apiUrl}NVMail/getMail`)
   }
 
   getMailSummary(mailDetails:any){
@@ -45,43 +49,15 @@ export class MailboxService {
    return  of('Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem mollitia nemo illum ut veniam cum voluptatum id unde vero porro esse quae officia praesentium fugit tenetur temporibus iste, dolore voluptatibus.')
   }
 
-  addNewGroup(){
-    return of()
+  addNewGroup(data:any){
+    return this.http.post(`${this.apiUrl}NVPreference/addGroup`,data)
   }
 
-  editGroup(){
-    return of()
+  editGroup(data:any){
+    return this.http.put(`${this.apiUrl}NVPreference/edit_group`,data)
   }
 
-  getGroupListDesc(){
-    return of( [
-        {
-          field: 'Priority',
-          description:
-            'Indicates the level of importance or urgency of a task, usually categorized as High, Medium, or Low.',
-        },
-        {
-          field: 'Urgency',
-          description:
-            'Represents the time sensitivity of a task. It refers to how quickly a task needs to be completed, typically categorized as Immediate, Soon, or Later.',
-        },
-        {
-          field: 'Urgency',
-          description:
-            'This is another reference to the urgency level, often used interchangeably with priority but may reflect specific deadlines or conditions.',
-        },
-        {
-          field: 'Team',
-          description:
-            'Refers to the group of people responsible for completing the task or project, typically based on skills or department.',
-        },
-        {
-          field: 'Project',
-          description:
-            'Describes the larger initiative or goal that a task or set of tasks is contributing to, often including specific objectives, timelines, and deliverables.',
-        },
-      ])
-  }
+ 
   getSubGroupListDesc(){
     return of( [
       {
@@ -110,5 +86,9 @@ export class MailboxService {
           'Describes the larger initiative or goal that a task or set of tasks is contributing to, often including specific objectives, timelines, and deliverables.',
       },
     ])
+  }
+
+  deleteGroup(group_id:number){
+   return this.http.delete(`${this.apiUrl}NVPreference/delete_group/${group_id}`)
   }
 }

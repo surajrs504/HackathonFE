@@ -27,7 +27,17 @@ import { MailboxService } from '../../services/mailbox.service';
 import { ProfilePopupComponent } from '../../../../shared/components/profile-popup/profile-popup.component';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { CommonService } from '../../../../core/services/common/common.service';
-import { MailSearchBarComponent } from "../../../../shared/components/mail-search-bar/mail-search-bar.component";
+import { MailSearchBarComponent } from '../../../../shared/components/mail-search-bar/mail-search-bar.component';
+import {
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MsalService,
+} from '@azure/msal-angular';
+import {
+  AuthenticationResult,
+  InteractionRequiredAuthError,
+} from '@azure/msal-browser';
+import { MSALInstanceFactory } from '../../../auth/components/login/login.component';
 export interface frequentGroupList {
   name: string;
 }
@@ -50,10 +60,23 @@ export interface frequentGroupList {
     MatCheckboxModule,
     MatMenuModule,
     MatTooltipModule,
-    MailSearchBarComponent
-],
+    MailSearchBarComponent,
+  ],
   templateUrl: './mailbox.component.html',
   styleUrl: './mailbox.component.scss',
+  providers: [
+    MsalService,
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useValue: {
+        loginFailedRoute: '/login',
+      },
+    },
+  ],
 })
 export class MailboxComponent implements OnInit {
   mail_data: any;
@@ -61,10 +84,10 @@ export class MailboxComponent implements OnInit {
   groupListControl = new FormControl('');
   subGroupListControl = new FormControl('');
   searchMailControl = new FormControl('');
-  groupList: string[] = [];
+  groupList: any[] = [];
   subGroupList: string[] = [];
 
-  filteredGroupOptions: Observable<string[]> | undefined;
+  filteredGroupOptions: Observable<any[]> | undefined;
   filteredSubGroupOptions: Observable<string[]> | undefined;
   filteredMailSearchOptions: Observable<any[]> | undefined;
   isSelectAllEnabled = false;
@@ -77,6 +100,7 @@ export class MailboxComponent implements OnInit {
   readonly profileDetailsDialog = inject(MatDialog);
   private notificationService = inject(NotificationService);
   private commonService = inject(CommonService);
+  private msalService = inject(MsalService);
 
   mailBoxService = inject(MailboxService);
 
@@ -85,27 +109,22 @@ export class MailboxComponent implements OnInit {
     this.getGroupList();
     this.getSubGroupList();
     this.getMailList();
-    this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterGroups(value || ''))
-    );
+   
     this.filteredSubGroupOptions = this.subGroupListControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterSubGroups(value || ''))
     );
-   
-    this.selectedMail = this.mail_data[0];
   }
 
   mailClicked(mail: any) {
     this.selectedMail = mail;
   }
 
-  private _filterGroups(value: string): string[] {
+  private _filterGroups(value: string) {
     const filterValue = value.toLowerCase();
-
+    if(!this.groupList)return [""]
     return this.groupList.filter((option) =>
-      option.toLowerCase().includes(filterValue)
+      option.group_name.toLowerCase().includes(filterValue)
     );
   }
 
@@ -116,7 +135,6 @@ export class MailboxComponent implements OnInit {
       option.toLowerCase().includes(filterValue)
     );
   }
-  
 
   remove(fruit: frequentGroupList): void {
     this.frequentGroupList = this.frequentGroupList.filter((k) => k !== fruit);
@@ -150,11 +168,19 @@ export class MailboxComponent implements OnInit {
     });
   }
   getGroupList() {
+    this.isLoading = true;
     this.mailBoxService.getGroupList().subscribe({
-      next: (data) => {
-        this.groupList = data;
+      next: (data: any) => {
+        this.groupList = data.groups;
+        this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filterGroups(value || ''))
+        );
       },
       error: (error) => {},
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
   getSubGroupList() {
@@ -168,11 +194,16 @@ export class MailboxComponent implements OnInit {
 
   //mail list section
   getMailList() {
+    this.isLoading = true;
     this.mailBoxService.getMailList().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.mail_data = data.value;
+        this.selectedMail = this.mail_data[0];
       },
       error: (error) => {},
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
@@ -184,8 +215,5 @@ export class MailboxComponent implements OnInit {
     });
   }
 
-  sendEmail() {
-   
-  }
- 
+  sendEmail() {}
 }

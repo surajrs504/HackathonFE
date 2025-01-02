@@ -6,7 +6,15 @@
                   <div class="py-3 login-container__form-title text-center">
                     Welcome
                   </div>
-        
+                  <button
+                       
+                  mat-raised-button
+                  mat-button
+                 (click)="login()"
+                  class="primary-btn-full form-container-signin w-100"
+                >
+                  Sign In
+                </button>
                   <form [formGroup]="loginForm"  novalidate>
                     <div class="form-container">
                       <div
@@ -56,15 +64,7 @@
                           >
                         </mat-form-field>
                       </div>
-                      <button
-                       
-                        mat-raised-button
-                        mat-button
-                       (click)="onSubmit()"
-                        class="primary-btn-full form-container-signin w-100"
-                      >
-                        Sign In
-                      </button>
+                     
                     </div>
                   </form>
 <!--         

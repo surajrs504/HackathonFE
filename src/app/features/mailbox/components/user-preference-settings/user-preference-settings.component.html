@@ -40,9 +40,9 @@
                 />
                 <mat-autocomplete #auto="matAutocomplete">
                   @for (option of filteredGroupOptions | async; track
-                  option["field"]) {
-                  <mat-option [value]="option['field']"
-                    >{{ option["field"] }}
+                  option["group_name"]) {
+                  <mat-option [value]="option['group_name']"
+                    >{{ option["group_name"] }}
                   </mat-option>
                   }
                 </mat-autocomplete>
@@ -56,6 +56,16 @@
                     class="px-1"
                   >
                     <img src="assets/icons/common/person_edit.svg"
+                  /></span>
+                </div>
+                <div class="px-1">
+                  <span
+                    *ngIf="groupListControl.value"
+                    (click)="handleDeleteGroup()"
+                    matTooltip="Delete selected Group"
+                    class="px-1"
+                  >
+                    <img src="assets/icons/common/person_remove.svg"
                   /></span>
                 </div>
 

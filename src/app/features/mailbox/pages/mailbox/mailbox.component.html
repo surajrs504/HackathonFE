@@ -25,16 +25,19 @@
    <div class="w-60"> <app-mail-search-bar [mail_data]="mail_data"></app-mail-search-bar></div>
     <div class="w-20 d-flex justify-content-end align-items-center">
       <div (click)="handleShowProfile()">
-        <span class="px-1"> <img src="assets/icons/common/user.svg" /></span>
+        <span class="px-1"> <img src="assets/icons/common/person_circle.svg" /></span>
       </div>
     </div>
   </div>
   <div class="mail-container p-1 h-90 w-100 d-flex">
     <div class="w-20 h-100 py-2 px-1">
       <div class="py-1">
+       
         <div
-          class="mail-list-cell d-flex w-100 justify-content-end align-items-center px-3"
-        >
+          class="mail-list-cell d-flex w-100 justify-content-between align-items-center px-3"
+        > <div class="mail-preference-header">
+          Mail Preference
+        </div>
           <div (click)="handleUserGroupSetting()">
             <span matTooltip="Edit Mail Preference" class="px-1">
               <img src="assets/icons/common/user_setting.svg"
@@ -56,9 +59,10 @@
               />
               <mat-autocomplete #auto="matAutocomplete">
                 @for (option of filteredGroupOptions | async; track option) {
-                <mat-option [value]="option">{{ option }} </mat-option>
+                <mat-option [value]="option.group_name">{{ option.group_name }} </mat-option>
                 }
               </mat-autocomplete>
+              <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <input
@@ -73,6 +77,7 @@
                 <mat-option [value]="option">{{ option }}</mat-option>
                 }
               </mat-autocomplete>
+              <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
           </form>
 
@@ -177,19 +182,7 @@
             ></app-mail-list-cell>
           </div>
         </div>
-        <div
-          class="py-1 px-2"
-          *ngFor="let mail of mail_data"
-          (click)="mailClicked(mail)"
-        >
-          <div [ngClass]="{ highlight: mail === selectedMail }">
-            <app-mail-list-cell
-              [cellDetail]="mail"
-              [isSelectAllEnabled]="isSelectAllEnabled"
-              [isSelected]="isAllMailSelected"
-            ></app-mail-list-cell>
-          </div>
-        </div>
+      
       </div>
     </div>
     <div class="w-50 h-100 mail-container-body">

@@ -51,19 +51,18 @@ export class UserPreferenceSettingsComponent implements OnInit {
   groupListControl = new FormControl('');
   groupDescription = '';
   groupName = '';
-  subGroupName=''
+  subGroupName = '';
 
   isGroupEdit = false;
-  isSubGroupEdit=false
+  isSubGroupEdit = false;
   isAddNewGroup = false;
-  isAddNewSubGroup=false
+  isAddNewSubGroup = false;
 
   subGroupListControl = new FormControl('');
   subGroupDescription = '';
   selectedGroup: any;
   seletedSubGroup: any;
   selectedTab = 0;
-
 
   constructor(
     public userPreferenceRef: MatDialogRef<UserPreferenceSettingsComponent>
@@ -76,9 +75,9 @@ export class UserPreferenceSettingsComponent implements OnInit {
   }
 
   getGroupList() {
-    this.mailBoxService.getGroupListDesc().subscribe({
-      next: (response) => {
-        this.groupList = response;
+    this.mailBoxService.getGroupList().subscribe({
+      next: (response: any) => {
+        this.groupList = response.groups;
         this.groupListControl.setValue('');
         this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
           startWith(''),
@@ -95,12 +94,11 @@ export class UserPreferenceSettingsComponent implements OnInit {
     });
   }
 
- 
   private _filterGroups(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.groupList.filter((option) =>
-      option.field.toLowerCase().includes(filterValue)
+      option.group_name.toLowerCase().includes(filterValue)
     );
   }
 
@@ -132,9 +130,6 @@ export class UserPreferenceSettingsComponent implements OnInit {
 
   saveGroupChanges() {}
 
- 
-
-
   saveSubGroupChanges() {}
 
   handleGroupEdit() {
@@ -142,20 +137,35 @@ export class UserPreferenceSettingsComponent implements OnInit {
     this.isAddNewGroup = false;
   }
 
+  handleDeleteGroup(){
+    const selectedGroup = this.groupListControl?.value;
+    const selectedGroupData = this.groupList.find(
+      (group) => group.group_name === selectedGroup
+    );
+    this.mailBoxService.deleteGroup(selectedGroupData?.id).subscribe({
+      next: (response) => {
+        this.getGroupList();
+        this.notificationService.showSuccess('Group deleted succesfully', 5);
+      },
+      error: (error) => {
+        this.notificationService.showError('Somthing went wrong', 5);
+      },
+    })
+  }
+
   handleGroupSelection(selection: any) {
-    if(this.selectedTab===0){
+    if (this.selectedTab === 0) {
       this.groupDescription = '';
       const selectedGroup = this.groupList.find(
-        (group) => this.groupListControl.value === group.field
+        (group) => this.groupListControl.value === group.group_name
       );
       this.groupDescription = selectedGroup?.description;
       this.groupName = this.groupListControl?.value!;
-      return
+      return;
     }
-    if(this.selectedTab===1){
-      this.getSubGroupList()
+    if (this.selectedTab === 1) {
+      this.getSubGroupList();
     }
-   
   }
 
   handleGroupSave() {
@@ -163,21 +173,30 @@ export class UserPreferenceSettingsComponent implements OnInit {
       const selectedGroup = this.groupListControl?.value;
       const newGroupName = this.groupName;
       const newGroupDescripion = this.groupDescription;
+      const selectedGroupData = this.groupList.find(
+        (group) => group.group_name === selectedGroup
+      );
 
       console.log('EDIT', selectedGroup, newGroupName, newGroupDescripion);
       this.isAddNewGroup = false;
       this.isGroupEdit = false;
       this.groupName = '';
       this.groupDescription = '';
-      this.getGroupList();
-      // this.mailBoxService.editGroup().subscribe({
-      //   next: (response) => {
-      //     this.notificationService.showSuccess('Group edited succesfully', 5);
-      //   },
-      //   error: (error) => {
-      //     this.notificationService.showError('Somthing went wrong', 5);
-      //   },
-      // });
+      const data = {
+        id: selectedGroupData.id,
+        group_name: newGroupName,
+        description: newGroupDescripion,
+      };
+
+      this.mailBoxService.editGroup(data).subscribe({
+        next: (response) => {
+          this.getGroupList();
+          this.notificationService.showSuccess('Group edited succesfully', 5);
+        },
+        error: (error) => {
+          this.notificationService.showError('Somthing went wrong', 5);
+        },
+      });
     }
     if (this.isAddNewGroup) {
       const newGroupName = this.groupName;
@@ -202,28 +221,27 @@ export class UserPreferenceSettingsComponent implements OnInit {
     this.selectedTab = tabNumber;
   }
 
-  getSubGroupList(){
+  getSubGroupList() {
     this.mailBoxService.getSubGroupListDesc().subscribe({
-      next:(response)=>{
-        this.subGroupList=response
+      next: (response) => {
+        this.subGroupList = response;
         this.subGroupListControl.setValue('');
 
-        this.filteredSubGroupOptions = this.subGroupListControl.valueChanges.pipe(
-          startWith(''),
-          map((value) => {
-            if (this._filterSubGroups(value || '').length === 0) {
-              this.subGroupDescription = '';
-            }
-            return this._filterSubGroups(value || '');
-          })
-        );
+        this.filteredSubGroupOptions =
+          this.subGroupListControl.valueChanges.pipe(
+            startWith(''),
+            map((value) => {
+              if (this._filterSubGroups(value || '').length === 0) {
+                this.subGroupDescription = '';
+              }
+              return this._filterSubGroups(value || '');
+            })
+          );
       },
-      error:(response)=>{
-
-      }
-    })
+      error: (response) => {},
+    });
   }
-  handleSubGroupSelection(){
+  handleSubGroupSelection() {
     const selectedSubGroup = this.subGroupList.find(
       (group) => this.subGroupListControl.value === group.field
     );
@@ -232,22 +250,27 @@ export class UserPreferenceSettingsComponent implements OnInit {
     return;
   }
 
-  handleSubGroupEdit(){
-    this.isSubGroupEdit=true
-    this.isAddNewSubGroup=false
+  handleSubGroupEdit() {
+    this.isSubGroupEdit = true;
+    this.isAddNewSubGroup = false;
   }
 
   handleAddNewSubGroup() {
-    this.isAddNewSubGroup=true
-    this.isSubGroupEdit=false
+    this.isAddNewSubGroup = true;
+    this.isSubGroupEdit = false;
   }
-  handleSubGroupSave(){
+  handleSubGroupSave() {
     if (this.isSubGroupEdit) {
       const selectedSubGroup = this.groupListControl?.value;
       const newSubGroupName = this.groupName;
       const newSubGroupDescripion = this.groupDescription;
 
-      console.log('EDIT', selectedSubGroup, newSubGroupName, newSubGroupDescripion);
+      console.log(
+        'EDIT',
+        selectedSubGroup,
+        newSubGroupName,
+        newSubGroupDescripion
+      );
       this.isAddNewSubGroup = false;
       this.isSubGroupEdit = false;
       this.subGroupName = '';
@@ -265,20 +288,25 @@ export class UserPreferenceSettingsComponent implements OnInit {
     if (this.isAddNewGroup) {
       const newSubGroupName = this.groupName;
       const newSubGroupDescripion = this.groupDescription;
+      const data = {
+        group_name: newSubGroupName,
+        description: newSubGroupDescripion,
+      };
       console.log('ADD', newSubGroupName, newSubGroupDescripion);
-      // this.mailBoxService.addNewGroup().subscribe({
-      //   next: (response) => {
-      //     this.notificationService.showSuccess('Group edited succesfully', 5);
-      //   },
-      //   error: (error) => {
-      //     this.notificationService.showError('Somthing went wrong', 5);
-      //   },
-      // });
+      this.mailBoxService.addNewGroup(data).subscribe({
+        next: (response) => {
+          this.getGroupList();
+          this.notificationService.showSuccess('Group edited succesfully', 5);
+        },
+        error: (error) => {
+          this.notificationService.showError('Somthing went wrong', 5);
+        },
+      });
       this.isAddNewSubGroup = false;
       this.isSubGroupEdit = false;
       this.subGroupName = '';
       this.subGroupDescription = '';
-      this.getGroupList();
+      // this.getGroupList();
     }
   }
 }

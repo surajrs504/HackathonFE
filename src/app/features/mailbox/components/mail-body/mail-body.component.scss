@@ -182,6 +182,12 @@
 
 .button-size{
   height: 1.8rem;
+  background-color: rgb(24, 115, 189);
+    color: white !important;
+}
+
+.mdc-tab-indicator .mdc-tab-indicator__content{
+  border-color: rgb(24, 115, 189) !important;
 }
 
 
