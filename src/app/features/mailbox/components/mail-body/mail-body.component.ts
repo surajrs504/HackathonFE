@@ -140,5 +140,16 @@ export class MailBodyComponent implements OnChanges {
       error: (error) => {},
     });
   }
+  handleReplyMailEmailClient(){
+    const recipient = 'example@example.com'; // Recipient email
+    const subject = 'Subject of the email';
+    const body = 'Hello, this is the body of the email!'; // Email body content
+
+    // Create the mailto URL
+    const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Open the default email client with the pre-filled content
+    window.location.href = mailtoLink;
+  }
 
 }

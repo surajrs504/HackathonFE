@@ -19,6 +19,8 @@ import { map, Observable, startWith } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MailboxService } from '../../services/mailbox.service';
+import { NotificationService } from '../../../../core/services/notification/notification.service';
 @Component({
   selector: 'app-user-preference-settings',
   standalone: true,
@@ -41,29 +43,59 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class UserPreferenceSettingsComponent implements OnInit {
   myControl = new FormControl('');
-  groupList: any[] = [
-    { field: 'Priority', description: 'Indicates the level of importance or urgency of a task, usually categorized as High, Medium, or Low.' },
-    { field: 'Urgency', description: 'Represents the time sensitivity of a task. It refers to how quickly a task needs to be completed, typically categorized as Immediate, Soon, or Later.' },
-    { field: 'Urgency', description: 'This is another reference to the urgency level, often used interchangeably with priority but may reflect specific deadlines or conditions.' },
-    { field: 'Team', description: 'Refers to the group of people responsible for completing the task or project, typically based on skills or department.' },
-    { field: 'Project', description: 'Describes the larger initiative or goal that a task or set of tasks is contributing to, often including specific objectives, timelines, and deliverables.' }
-  ];
-  subGroupList: string[] = ['Priority', 'Urgency', 'Client', 'Team', 'Project'];
-  filteredGroupOptions: Observable<string[]> | undefined;
+  groupList: any[] = [];
+  subGroupList: any[] = [];
+  // subGroupList: string[] = ['Priority', 'Urgency', 'Client', 'Team', 'Project'];
+  filteredGroupOptions: Observable<any[]> | undefined;
+  filteredSubGroupOptions: Observable<any[]> | undefined;
   groupListControl = new FormControl('');
+  groupDescription = '';
+  groupName = '';
+  subGroupName=''
 
   isGroupEdit = false;
+  isSubGroupEdit=false
   isAddNewGroup = false;
+  isAddNewSubGroup=false
+
+  subGroupListControl = new FormControl('');
+  subGroupDescription = '';
+  selectedGroup: any;
+  seletedSubGroup: any;
+  selectedTab = 0;
+
+
   constructor(
     public userPreferenceRef: MatDialogRef<UserPreferenceSettingsComponent>
   ) {}
+  private mailBoxService = inject(MailboxService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit(): void {
-    this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterGroups(value || ''))
-    );
+    this.getGroupList();
   }
+
+  getGroupList() {
+    this.mailBoxService.getGroupListDesc().subscribe({
+      next: (response) => {
+        this.groupList = response;
+        this.groupListControl.setValue('');
+        this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
+          startWith(''),
+          map((value) => {
+            console.log(this._filterGroups(value || ''));
+            if (this._filterGroups(value || '').length === 0) {
+              this.groupDescription = '';
+            }
+            return this._filterGroups(value || '');
+          })
+        );
+      },
+      error: (error) => {},
+    });
+  }
+
+ 
   private _filterGroups(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -71,13 +103,21 @@ export class UserPreferenceSettingsComponent implements OnInit {
       option.field.toLowerCase().includes(filterValue)
     );
   }
+
+  private _filterSubGroups(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.subGroupList.filter((option) =>
+      option.field.toLowerCase().includes(filterValue)
+    );
+  }
   handleRemoveGroup(keyword: string) {
     this.groupList = this.groupList.filter((k) => k !== keyword);
   }
 
-  handleRemoveSubGroup(keyword: string) {
-    this.subGroupList = this.subGroupList.filter((k) => k !== keyword);
-  }
+  // handleRemoveSubGroup(keyword: string) {
+  //   this.subGroupList = this.subGroupList.filter((k) => k !== keyword);
+  // }
 
   closeDialog() {
     this.userPreferenceRef.close();
@@ -86,19 +126,159 @@ export class UserPreferenceSettingsComponent implements OnInit {
   handleAddNewGroup() {
     this.isGroupEdit = false;
     this.isAddNewGroup = true;
+    this.groupName = '';
+    this.groupDescription = '';
   }
 
   saveGroupChanges() {}
 
-  handleAddNewSubGroup() {}
+ 
+
 
   saveSubGroupChanges() {}
 
   handleGroupEdit() {
     this.isGroupEdit = true;
+    this.isAddNewGroup = false;
   }
 
   handleGroupSelection(selection: any) {
-    console.log('selection', this.groupListControl.value);
+    if(this.selectedTab===0){
+      this.groupDescription = '';
+      const selectedGroup = this.groupList.find(
+        (group) => this.groupListControl.value === group.field
+      );
+      this.groupDescription = selectedGroup?.description;
+      this.groupName = this.groupListControl?.value!;
+      return
+    }
+    if(this.selectedTab===1){
+      this.getSubGroupList()
+    }
+   
+  }
+
+  handleGroupSave() {
+    if (this.isGroupEdit) {
+      const selectedGroup = this.groupListControl?.value;
+      const newGroupName = this.groupName;
+      const newGroupDescripion = this.groupDescription;
+
+      console.log('EDIT', selectedGroup, newGroupName, newGroupDescripion);
+      this.isAddNewGroup = false;
+      this.isGroupEdit = false;
+      this.groupName = '';
+      this.groupDescription = '';
+      this.getGroupList();
+      // this.mailBoxService.editGroup().subscribe({
+      //   next: (response) => {
+      //     this.notificationService.showSuccess('Group edited succesfully', 5);
+      //   },
+      //   error: (error) => {
+      //     this.notificationService.showError('Somthing went wrong', 5);
+      //   },
+      // });
+    }
+    if (this.isAddNewGroup) {
+      const newGroupName = this.groupName;
+      const newGroupDescripion = this.groupDescription;
+      console.log('ADD', newGroupName, newGroupDescripion);
+      // this.mailBoxService.addNewGroup().subscribe({
+      //   next: (response) => {
+      //     this.notificationService.showSuccess('Group edited succesfully', 5);
+      //   },
+      //   error: (error) => {
+      //     this.notificationService.showError('Somthing went wrong', 5);
+      //   },
+      // });
+      this.isAddNewGroup = false;
+      this.isGroupEdit = false;
+      this.groupName = '';
+      this.groupDescription = '';
+      this.getGroupList();
+    }
+  }
+  handleTabChange(tabNumber: number) {
+    this.selectedTab = tabNumber;
+  }
+
+  getSubGroupList(){
+    this.mailBoxService.getSubGroupListDesc().subscribe({
+      next:(response)=>{
+        this.subGroupList=response
+        this.subGroupListControl.setValue('');
+
+        this.filteredSubGroupOptions = this.subGroupListControl.valueChanges.pipe(
+          startWith(''),
+          map((value) => {
+            if (this._filterSubGroups(value || '').length === 0) {
+              this.subGroupDescription = '';
+            }
+            return this._filterSubGroups(value || '');
+          })
+        );
+      },
+      error:(response)=>{
+
+      }
+    })
+  }
+  handleSubGroupSelection(){
+    const selectedSubGroup = this.subGroupList.find(
+      (group) => this.subGroupListControl.value === group.field
+    );
+    this.subGroupDescription = selectedSubGroup?.description;
+    this.subGroupName = this.subGroupListControl?.value!;
+    return;
+  }
+
+  handleSubGroupEdit(){
+    this.isSubGroupEdit=true
+    this.isAddNewSubGroup=false
+  }
+
+  handleAddNewSubGroup() {
+    this.isAddNewSubGroup=true
+    this.isSubGroupEdit=false
+  }
+  handleSubGroupSave(){
+    if (this.isSubGroupEdit) {
+      const selectedSubGroup = this.groupListControl?.value;
+      const newSubGroupName = this.groupName;
+      const newSubGroupDescripion = this.groupDescription;
+
+      console.log('EDIT', selectedSubGroup, newSubGroupName, newSubGroupDescripion);
+      this.isAddNewSubGroup = false;
+      this.isSubGroupEdit = false;
+      this.subGroupName = '';
+      this.subGroupDescription = '';
+      this.getGroupList();
+      // this.mailBoxService.editGroup().subscribe({
+      //   next: (response) => {
+      //     this.notificationService.showSuccess('Group edited succesfully', 5);
+      //   },
+      //   error: (error) => {
+      //     this.notificationService.showError('Somthing went wrong', 5);
+      //   },
+      // });
+    }
+    if (this.isAddNewGroup) {
+      const newSubGroupName = this.groupName;
+      const newSubGroupDescripion = this.groupDescription;
+      console.log('ADD', newSubGroupName, newSubGroupDescripion);
+      // this.mailBoxService.addNewGroup().subscribe({
+      //   next: (response) => {
+      //     this.notificationService.showSuccess('Group edited succesfully', 5);
+      //   },
+      //   error: (error) => {
+      //     this.notificationService.showError('Somthing went wrong', 5);
+      //   },
+      // });
+      this.isAddNewSubGroup = false;
+      this.isSubGroupEdit = false;
+      this.subGroupName = '';
+      this.subGroupDescription = '';
+      this.getGroupList();
+    }
   }
 }

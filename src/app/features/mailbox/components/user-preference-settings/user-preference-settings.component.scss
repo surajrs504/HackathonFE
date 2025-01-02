@@ -33,3 +33,17 @@
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }
 }
+
+.mat-mdc-menu-item {
+  min-height: 2rem !important;
+  height: 2rem !important;
+} 
+
+.mat-mdc-option.mdc-list-item{
+  font-size: 0.85rem !important;
+  height: 2.1rem !important;
+  min-height: 2.1rem !important;
+}
+.subGroupContainer{
+  height: 21rem;
+}

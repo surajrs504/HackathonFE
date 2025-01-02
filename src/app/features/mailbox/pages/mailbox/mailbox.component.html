@@ -18,16 +18,11 @@
         class="w-50"
         src="../../../../../assets/images/NV-MAIL-LOGO.png"
         alt=""
-      />
+      /> 
+      <!-- <a href="mailto:surajrs504@gmail.com">click for mail</a>
+           <button (click)="sendEmail()">Send Email</button> -->
     </div>
-    <form
-      class="searchBar d-flex justify-content-center align-items-center w-60"
-    >
-      <mat-form-field class="w-50" appearance="outline">
-        <input matInput placeholder="Search" />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </form>
+   <div class="w-60"> <app-mail-search-bar [mail_data]="mail_data"></app-mail-search-bar></div>
     <div class="w-20 d-flex justify-content-end align-items-center">
       <div (click)="handleShowProfile()">
         <span class="px-1"> <img src="assets/icons/common/user.svg" /></span>

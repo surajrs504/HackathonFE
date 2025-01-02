@@ -79,19 +79,20 @@
 
 
   .searchBar{
+    
     .mdc-notched-outline__leading{
-      border-block: 2px solid rgb(200, 198, 198) !important;
-      border-left:2px solid rgb(200, 198, 198)  !important;
+      border-block: 2px solid rgb(24, 115, 189) !important;
+      border-left:2px solid rgb(24, 115, 189)  !important;
       border-top-left-radius: 2rem !important;
       border-bottom-left-radius: 2rem !important;
       //border-radius: 5rem !important;
     }
     .mdc-notched-outline__notch{
-      border-block: 2px solid rgb(200, 198, 198) !important;
+      border-block: 2px solid rgb(24, 115, 189) !important;
     }
     .mdc-notched-outline__trailing{
-      border-block: 2px solid rgb(200, 198, 198) !important;
-      border-right:2px solid rgb(200, 198, 198)  !important;
+      border-block: 2px solid rgb(24, 115, 189) !important;
+      border-right:2px solid rgb(24, 115, 189)  !important;
       border-top-right-radius: 1rem !important;
       border-bottom-right-radius: 1rem !important;
     }
@@ -132,6 +133,25 @@
 .mail-body-details-body{
   .mat-mdc-tab-body-wrapper{
     height: 90% !important;
+  }
+}
+
+.text-area{
+  .mdc-notched-outline__leading{
+    border-block: 1px solid rgb(200, 198, 198) !important;
+    border-left:1px solid rgb(200, 198, 198)  !important;
+    border-top-left-radius: 0.6rem !important;
+    border-bottom-left-radius: 0.6rem !important;
+    //border-radius: 5rem !important;
+  }
+  .mdc-notched-outline__notch{
+    border-block: 1px solid rgb(200, 198, 198) !important;
+  }
+  .mdc-notched-outline__trailing{
+    border-block: 1px solid rgb(200, 198, 198) !important;
+    border-right:1px solid rgb(200, 198, 198)  !important;
+    border-top-right-radius: 0.6rem !important;
+    border-bottom-right-radius: 0.6rem !important;
   }
 }
  

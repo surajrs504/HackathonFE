@@ -1,0 +1,40 @@
+<form
+class="searchBar d-flex justify-content-center align-items-center w-100"
+>
+<mat-form-field class="w-70" appearance="outline">
+  <!-- <input matInput placeholder="Search" />
+  <mat-icon matSuffix>search</mat-icon> -->
+ 
+    <input
+      type="text"
+      matInput
+      [formControl]="searchMailControl"
+      [matAutocomplete]="auto2"
+      placeholder="Search"
+    />
+    <mat-autocomplete #auto2="matAutocomplete">
+      @for (option of filteredMailSearchOptions | async; track
+      option) {
+      <mat-option [value]='option["sender"]["emailAddress"]["name"]'
+        >  
+      <div class="search-row d-flex align-items-center">
+        <div class="px-2">
+          <div  class="search-row-icon "  [style.background-color]="getLetterColor(getFirstLetter(option))">
+            <div class="search-row-icon-letter">{{getFirstLetter(option)}}</div>
+          </div>
+        </div>
+     
+        <div class="px-2" >
+          <div>{{option["sender"]["emailAddress"]["name"]}}</div>
+          <div class="search-row-icon-desc">
+          {{option["subject"]}}
+          </div>
+        </div>
+        
+      </div>
+      </mat-option>
+      }
+    </mat-autocomplete>
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+</form>

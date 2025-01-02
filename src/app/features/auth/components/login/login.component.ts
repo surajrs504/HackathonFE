@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-  //  private authService: AuthService,
+    private authService: AuthService,
 //    private notificationService: NotificationService,
   //  private roleService: RolesServiceService,
    // private commonService: CommonService
@@ -38,6 +39,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.openSnackBar('Please wait while we sign you in');
+    this.authService.login("")
     // if (this.loginForm.valid) {
     //   this.commonService.setLoading(true);
     //   this.authService

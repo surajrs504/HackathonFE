@@ -11,12 +11,7 @@
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }
-  &-list {
-    // border-block: 2px solid #dedede;
-  }
-  &-body {
-    // border: 2px solid #dedede;
-  }
+
 }
 
 .mail-body {
@@ -96,6 +91,7 @@
 
 }
 
+
 .mat-mdc-option.mdc-list-item{
   font-size: 0.85rem !important;
   height: 2.1rem !important;
@@ -118,3 +114,6 @@
 .spinner-border{
   color: rgb(58, 119, 234) !important;
 }
+
+
+

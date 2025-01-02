@@ -1,0 +1,35 @@
+.search-row{
+    &-icon {
+      width: 2rem;
+      background-color: #e3e3e3;
+      height: 2rem;
+      border-radius: 50%;
+      &-letter {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &-desc {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.8rem;
+        color: grey;
+      }
+    }
+    .mat-mdc-option.mdc-list-item{
+      height: 3rem !important;
+    }
+  }
+  
+  
+  .search-row{
+    height: 3.2rem;
+  }
+
+  .mat-mdc-option.mdc-list-item{
+    height: 3rem !important;
+  }

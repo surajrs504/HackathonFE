@@ -109,3 +109,11 @@
       }
     }
   }
+
+  .no-account-text {
+    font-size: 0.9rem;
+    &-signUp {
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }

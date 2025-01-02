@@ -25,6 +25,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserPreferenceSettingsComponent } from '../../components/user-preference-settings/user-preference-settings.component';
 import { MailboxService } from '../../services/mailbox.service';
 import { ProfilePopupComponent } from '../../../../shared/components/profile-popup/profile-popup.component';
+import { NotificationService } from '../../../../core/services/notification/notification.service';
+import { CommonService } from '../../../../core/services/common/common.service';
+import { MailSearchBarComponent } from "../../../../shared/components/mail-search-bar/mail-search-bar.component";
 export interface frequentGroupList {
   name: string;
 }
@@ -47,7 +50,8 @@ export interface frequentGroupList {
     MatCheckboxModule,
     MatMenuModule,
     MatTooltipModule,
-  ],
+    MailSearchBarComponent
+],
   templateUrl: './mailbox.component.html',
   styleUrl: './mailbox.component.scss',
 })
@@ -56,19 +60,23 @@ export class MailboxComponent implements OnInit {
   selectedMail: any;
   groupListControl = new FormControl('');
   subGroupListControl = new FormControl('');
+  searchMailControl = new FormControl('');
   groupList: string[] = [];
   subGroupList: string[] = [];
 
   filteredGroupOptions: Observable<string[]> | undefined;
   filteredSubGroupOptions: Observable<string[]> | undefined;
+  filteredMailSearchOptions: Observable<any[]> | undefined;
   isSelectAllEnabled = false;
   isAllMailSelected = false;
-  isLoading=false
+  isLoading = false;
 
   frequentGroupList: frequentGroupList[] = [];
 
   readonly userGroupDialog = inject(MatDialog);
   readonly profileDetailsDialog = inject(MatDialog);
+  private notificationService = inject(NotificationService);
+  private commonService = inject(CommonService);
 
   mailBoxService = inject(MailboxService);
 
@@ -76,7 +84,7 @@ export class MailboxComponent implements OnInit {
     this.getFrequentGroupList();
     this.getGroupList();
     this.getSubGroupList();
-   this.getMailList()
+    this.getMailList();
     this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterGroups(value || ''))
@@ -85,6 +93,7 @@ export class MailboxComponent implements OnInit {
       startWith(''),
       map((value) => this._filterSubGroups(value || ''))
     );
+   
     this.selectedMail = this.mail_data[0];
   }
 
@@ -107,6 +116,7 @@ export class MailboxComponent implements OnInit {
       option.toLowerCase().includes(filterValue)
     );
   }
+  
 
   remove(fruit: frequentGroupList): void {
     this.frequentGroupList = this.frequentGroupList.filter((k) => k !== fruit);
@@ -124,7 +134,6 @@ export class MailboxComponent implements OnInit {
       UserPreferenceSettingsComponent,
       {}
     );
-
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
@@ -157,14 +166,14 @@ export class MailboxComponent implements OnInit {
     });
   }
 
-  //mail list section 
-  getMailList(){
-      this.mailBoxService.getMailList().subscribe({
-        next: (data) => {
-          this.mail_data = data.value;
-        },
-        error: (error) => {},
-      })  ;
+  //mail list section
+  getMailList() {
+    this.mailBoxService.getMailList().subscribe({
+      next: (data) => {
+        this.mail_data = data.value;
+      },
+      error: (error) => {},
+    });
   }
 
   handleShowProfile() {
@@ -174,4 +183,9 @@ export class MailboxComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
+
+  sendEmail() {
+   
+  }
+ 
 }

@@ -7,7 +7,7 @@
                     Welcome
                   </div>
         
-                  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+                  <form [formGroup]="loginForm"  novalidate>
                     <div class="form-container">
                       <div
                         class="mb-2 fdt-remove-line-ripple fdt-input-font fdt-input-border"
@@ -57,25 +57,26 @@
                         </mat-form-field>
                       </div>
                       <button
-                        [disabled]="!loginForm.valid"
+                       
                         mat-raised-button
                         mat-button
-                        class="primary-btn-full form-container-signin"
+                       (click)="onSubmit()"
+                        class="primary-btn-full form-container-signin w-100"
                       >
                         Sign In
                       </button>
                     </div>
                   </form>
-        
+<!--         
                   <div
                     class="d-flex position-relative pt-2 align-items-center justify-content-center"
                   >
                     <div class="horizontal-line horizontal-line-left"></div>
                     <div class="px-2 login-container__or">or Login with</div>
                     <div class="horizontal-line horizontal-line-right"></div>
-                  </div>
+                  </div> -->
         
-                  <div class="py-2">
+                  <!-- <div class="py-2">
                     <button
                       mat-stroked-button
                       class="primary-btn-full outlook-btn"
@@ -89,7 +90,7 @@
                             ><img
                               src="../../../../../assets/logos/microsoft_outlook.svg"
                           /></span> -->
-                          Microsoft Entra
+                          <!-- Microsoft Entra
                         </div>
                       </div>
                       <div
@@ -105,13 +106,13 @@
                         </div>
                       </div>
                     </button>
-                  </div>
-                  <div class="no-account-text">
+                  </div> -->
+                  <!-- <div class="no-account-text">
                     Don't have an account ?
                     <span class="no-account-text-signUp" (click)="navigateToSignUp()"
                       >Sign Up</span
                     >
-                  </div>
+                  </div> -->
                 </div>
               </div>
              
