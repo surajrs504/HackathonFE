@@ -1,9 +1,10 @@
+@import "../../../../shared/styles/_variables.scss";
 .top-bar-container {
   height: 15%;
   background-color: beige;
 }
 .mail-container {
-  background-color: #fbf8f8;
+  background-image: url("../../../../../assets/images/signin_bg.jpg");
   &-types {
     // border: 2px solid #dedede;
     background-color: white;
@@ -75,7 +76,7 @@
 
 
 .highlight {
-  border: 0.18rem solid #8484d7;
+  border: 0.18rem solid #5c5cbe;
   border-radius: 1rem;
 }
 .mail-list-cell {
@@ -87,8 +88,8 @@
 
 .main-header{
   height: 3.8rem;
-
-
+  // background: linear-gradient(90deg, rgba(21,9,88,1) 13%, rgba(237,2,19,1) 84%, rgba(21,9,88,1) 100%)
+background-color: rgba(21,9,88,1);
 }
 
 
@@ -112,7 +113,7 @@
 } 
 
 .spinner-border{
-  color: rgb(58, 119, 234) !important;
+  color: $color-primary !important;
 }
 
 .mail-preference-header{
@@ -120,4 +121,17 @@
   font-weight: 550;
 }
 
+.empty-inbox{
+  height: 8rem;
+}
 
+.color-primary{
+color:$color-primary
+}
+
+.header-username{
+  color: white;
+  font-weight: 550;
+  font-size: 1rem;
+  padding-inline: 0.4rem;
+}

@@ -1,8 +1,8 @@
 @import "../../../../shared/styles/_variables.scss";
 .form-container-signin {
-    background-color: #150958 !important;
-    color: $color-white !important;
-    font-weight: 600;
+  background-color: #9adade00 !important;
+    color: #0e0e0e !important;
+    font-weight: 500;
     height: 3rem;
     border-radius: 9px;
   }
@@ -116,4 +116,9 @@
       font-weight: 700;
       cursor: pointer;
     }
+  }
+
+  .microsoft-logo{
+    height: 6rem;
+    width: 6rem;
   }

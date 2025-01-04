@@ -1,10 +1,10 @@
 <div class="main-container p-2">
   <div class="header p-3 d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center">
-      Mail Preference
+      Edit Mail Preference
       <div class="px-1">
         <span
-          matTooltip="Edit your mail preferecnce and curate your mail box to your choice"
+          matTooltip="Update your email preferences and customize your inbox according to your preferences."
           class="px-1"
         >
           <img src="assets/icons/common/user_setting.svg"
@@ -15,241 +15,101 @@
       <mat-icon>close_small</mat-icon>
     </div>
   </div>
-  <div class="d-flex flex-column justify-content-center p-2">
-    <mat-tab-group
-      [classList]="'w-100'"
-      mat-stretch-tabs
-      class="example-stretched-tabs"
-      (selectedIndexChange)="handleTabChange($event)"
+  <div class="d-flex justify-content-center p-2">
+    <div
+      class="text-center position-absolute top-50 start-50 z-1"
+      *ngIf="isLoading"
     >
-      <mat-tab label="Group">
-        <div
-          class="py-3 group-list-container d-flex flex-column align-items-center h-100"
-        >
-          <div class="w-80">
-            <div class="dropdown d-flex justify-content-between">
-              <mat-form-field appearance="outline" class="w-90">
-                <input
-                  type="text"
-                  matInput
-                  [disabled]="!isAddNewGroup"
-                  [formControl]="groupListControl"
-                  [matAutocomplete]="auto"
-                  placeholder="Group Name"
-                  (selectionchange)="handleGroupSelection($event)"
-                />
-                <mat-autocomplete #auto="matAutocomplete">
-                  @for (option of filteredGroupOptions | async; track
-                  option["group_name"]) {
-                  <mat-option [value]="option['group_name']"
-                    >{{ option["group_name"] }}
-                  </mat-option>
-                  }
-                </mat-autocomplete>
-              </mat-form-field>
-              <div class="d-flex justify-content-around">
-                <div class="px-1">
-                  <span
-                    *ngIf="groupListControl.value"
-                    (click)="handleGroupEdit()"
-                    matTooltip="Edit selected Group"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/person_edit.svg"
-                  /></span>
-                </div>
-                <div class="px-1">
-                  <span
-                    *ngIf="groupListControl.value"
-                    (click)="handleDeleteGroup()"
-                    matTooltip="Delete selected Group"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/person_remove.svg"
-                  /></span>
-                </div>
-
-                <div class="px-1">
-                  <span
-                    *ngIf="!isGroupEdit"
-                    (click)="handleAddNewGroup()"
-                    matTooltip="Add new group"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/group_add.svg"
-                  /></span>
-                </div>
-                <div class="px-1">
-                  <span
-                    *ngIf="isGroupEdit || isAddNewGroup"
-                    (click)="handleGroupSave()"
-                    matTooltip="Save"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/save_as.svg"
-                  /></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="w-80">
-            <div class="textfield" *ngIf="isGroupEdit || isAddNewGroup">
-              <mat-form-field appearance="outline" class="w-100">
-                <input
-                  matInput
-                  [(ngModel)]="groupName"
-                  placeholder="Group Name"
-                />
-              </mat-form-field>
-            </div>
-
-            <div class="text-area">
-              <mat-form-field appearance="outline" class="w-100">
-                <textarea
-                  rows="8"
-                  [disabled]="!isGroupEdit && !isAddNewGroup"
-                  matInput
-                  placeholder="Group Description"
-                  [(ngModel)]="groupDescription"
-                ></textarea>
-              </mat-form-field>
-            </div>
-          </div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div
+      class="py-3 group-list-container d-flex flex-column align-items-center w-90 h-100"
+    >
+      <div class="w-90">
+        <div class="dropdown d-flex justify-content-between">
+          <div class="w-30">Group Name</div>
+          <mat-form-field appearance="outline" class="w-70">
+            <input
+              type="text"
+              matInput
+              [disabled]="!isAddNewGroup"
+              [formControl]="groupListControl"
+              [matAutocomplete]="auto"
+              placeholder="Group Name"
+              (selectionchange)="handleGroupSelection($event)"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              @for (option of filteredGroupOptions | async; track
+              option["group_name"]) {
+              <mat-option [value]="option['group_name']"
+                >{{ option["group_name"] }}
+              </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
         </div>
-        <!-- <div class="px-1 py-2">
-          <div>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>New Group Name</mat-label>
-              <input matInput placeholder="Placeholder" />
-              <mat-icon matSuffix>group_add</mat-icon>
-            </mat-form-field>
+      </div>
+      <div class="w-90">
+        <div class="textfield d-flex" *ngIf="isGroupEdit || isAddNewGroup">
+          <div class="w-30">
+            {{ isGroupEdit ? "Edit Group Name" : "New Group Name" }}
           </div>
-          <div>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>New Group Description</mat-label>
-              <textarea matInput></textarea>
-              <mat-icon matSuffix>description</mat-icon>
-            </mat-form-field>
-          </div>
-        </div> -->
-        <div class="w-100 d-flex justify-content-around"></div>
-      </mat-tab>
-      <mat-tab label="Sub Group">
-        <div
-          class="w-100 subGroupContainer d-flex justify-content-center overflow-y-auto"
-        >
-          <div class="px-1 w-80 py-3">
-            <div class="d-flex justify-content-between w-100">
-              <div class="w-80 dropdown d-flex">
-                <mat-form-field
-                  class="example-full-width w-100"
-                  appearance="outline"
-                >
-                  <input
-                    type="text"
-                    placeholder="Group"
-                    aria-label="Number"
-                    matInput
-                    [formControl]="groupListControl"
-                    [matAutocomplete]="auto"
-                    (selectionchange)="handleGroupSelection($event)"
-                  />
-                  <mat-autocomplete #auto="matAutocomplete">
-                    @for (option of filteredGroupOptions | async; track
-                    option["field"]) {
-                    <mat-option [value]="option['field']"
-                      >{{ option["field"] }}
-                    </mat-option>
-                    }
-                  </mat-autocomplete>
-                </mat-form-field>
-              </div>
-              <div class="d-flex justify-content-around">
-                <div class="px-1">
-                  <span
-                    *ngIf="subGroupListControl.value"
-                    (click)="handleSubGroupEdit()"
-                    matTooltip="Edit selected Group"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/person_edit.svg"
-                  /></span>
-                </div>
-
-                <div class="px-1">
-                  <span
-                    *ngIf="groupListControl.value && !isSubGroupEdit"
-                    (click)="handleAddNewSubGroup()"
-                    matTooltip="Add new group"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/group_add.svg"
-                  /></span>
-                </div>
-                <div class="px-1">
-                  <span
-                    *ngIf="isSubGroupEdit || isAddNewSubGroup"
-                    (click)="handleSubGroupSave()"
-                    matTooltip="Save"
-                    class="px-1"
-                  >
-                    <img src="assets/icons/common/save_as.svg"
-                  /></span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="w-100 dropdown">
-                <mat-form-field
-                  class="example-full-width w-100"
-                  appearance="outline"
-                >
-                  <input
-                    type="text"
-                    placeholder="Sub Group"
-                    aria-label="Number"
-                    matInput
-                    [formControl]="subGroupListControl"
-                    [matAutocomplete]="auto1"
-                    (selectionchange)="handleSubGroupSelection()"
-                  />
-                  <mat-autocomplete #auto1="matAutocomplete">
-                    @for (option of filteredSubGroupOptions | async; track
-                    option["field"]) {
-                    <mat-option [value]="option['field']"
-                      >{{ option["field"] }}
-                    </mat-option>
-                    }
-                  </mat-autocomplete>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div
-              class="w-100 d-flex justify-content-center flex-column text-area"
-            >
-              <div class="textfield" *ngIf="isSubGroupEdit || isAddNewSubGroup">
-                <mat-form-field appearance="outline" class="w-100">
-                  <input
-                    matInput
-                    [(ngModel)]="subGroupName"
-                    placeholder="New Sub Group Name"
-                  />
-                </mat-form-field>
-              </div>
-              <mat-form-field appearance="outline" class="w-100">
-                <textarea
-                  rows="5"
-                  matInput
-                  [disabled]="!isSubGroupEdit && !isAddNewSubGroup"
-                  [(ngModel)]="subGroupDescription"
-                ></textarea>
-                <mat-icon matSuffix>description</mat-icon>
-              </mat-form-field>
-            </div>
-          </div>
+          <mat-form-field appearance="outline" class="w-70">
+            <input matInput [(ngModel)]="groupName" placeholder="Group Name" />
+          </mat-form-field>
         </div>
-      </mat-tab>
-    </mat-tab-group>
+
+        <div class="text-area d-flex">
+          <div class="w-30">Group Description</div>
+          <mat-form-field appearance="outline" class="w-70">
+            <textarea
+              rows="8"
+              [disabled]="!isGroupEdit && !isAddNewGroup"
+              matInput
+              [(ngModel)]="groupDescription"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="py-3 px-2">
+      <div class=" button-container d-flex flex-column justify-content-around">
+        <div class="p-1" *ngIf="groupListControl.value">
+          <span
+            (click)="handleGroupEdit()"
+            matTooltip="Edit selected Group"
+            class="px-1"
+          >
+            <img src="assets/icons/common/person_edit.svg"
+          /></span>
+        </div>
+        <div class="p-1" *ngIf="groupListControl.value">
+          <span
+            (click)="handleDeleteGroup()"
+            matTooltip="Delete selected Group"
+            class="px-1"
+          >
+            <img src="assets/icons/common/person_remove.svg"
+          /></span>
+        </div>
+
+        <div class="p-1" *ngIf="!isGroupEdit">
+          <span
+            (click)="handleAddNewGroup()"
+            matTooltip="Add new group"
+            class="px-1"
+          >
+            <img src="assets/icons/common/group_add.svg"
+          /></span>
+        </div>
+        <div class="p-1" *ngIf="isGroupEdit || isAddNewGroup">
+          <span (click)="handleGroupSave()" matTooltip="Save" class="px-1">
+            <img src="assets/icons/common/save_as.svg"
+          /></span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

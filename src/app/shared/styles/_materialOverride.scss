@@ -1,157 +1,171 @@
 .login-container__form {
-    .mat-mdc-form-field-icon-suffix {
-      padding-bottom: 1rem;
-    }
-    .mat-icon {
-      height: 3rem !important;
-      width: 1.4rem !important;
-    }
-    .mat-mdc-icon-button.mat-mdc-button-base {
-      padding: 0px !important;
-    }
-    .mdc-button__label {
-      width: 100%;
-    }
+  .mat-mdc-form-field-icon-suffix {
+    padding-bottom: 1rem;
   }
+  .mat-icon {
+    height: 3rem !important;
+    width: 1.4rem !important;
+  }
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    padding: 0px !important;
+  }
+  .mdc-button__label {
+    width: 100%;
+  }
+}
 
-  .login-container .mat-mdc-form-field-infix {
+.login-container .mat-mdc-form-field-infix {
   padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
 
 .fdt-remove-line-ripple .mdc-line-ripple {
-    display: none;
-  }
-  
-  .fdt-input-font .mdc-text-field__input {
-    font-size: 0.9rem !important;
-  }
-  .register-container .register-container__form .mdc-text-field__input {
-    font-size: 0.8rem !important;
-  }
-  
-  .fdt-input-border .mdc-text-field {
-    border: none;
-    border-radius: 7px !important;
-    background-color: $color-white !important;
-    height: 3rem;
-  }
-
-
-  .dropdown,.textfield{
-    .mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
-      padding-top: 0.3rem !important;
-    }
-    .mdc-notched-outline__leading{
-      border-block: 1px solid rgb(200, 198, 198) !important;
-      border-left:1px solid rgb(200, 198, 198)  !important;
-      border-top-left-radius: 0.6rem !important;
-      border-bottom-left-radius: 0.6rem !important;
-      //border-radius: 5rem !important;
-    }
-    .mdc-notched-outline__notch{
-      border-block: 1px solid rgb(200, 198, 198) !important;
-    }
-    .mdc-notched-outline__trailing{
-      border-block: 1px solid rgb(200, 198, 198) !important;
-      border-right:1px solid rgb(200, 198, 198)  !important;
-      border-top-right-radius: 0.6rem !important;
-      border-bottom-right-radius: 0.6rem !important;
-    }
-    .mat-mdc-text-field-wrapper{
-      height: 2rem !important;
-     
-    font-size: 0.95rem;
-      .mat-mdc-form-field-flex {
-        height: 100% !important;
-        .mdc-text-field--outlined .mat-mdc-form-field-infix{
-          height: 2rem !important;
-          padding-bottom: 0rem;
-          padding-top: 0rem;
-          min-width: 2rem;
-          .mat-mdc-form-field{
-            height: 100%;
-          }
-        }
-      }
-    }
-  }
-
-
-  .searchBar{
-    
-    .mdc-notched-outline__leading{
-      border-block: 2px solid rgb(24, 115, 189) !important;
-      border-left:2px solid rgb(24, 115, 189)  !important;
-      border-top-left-radius: 2rem !important;
-      border-bottom-left-radius: 2rem !important;
-      //border-radius: 5rem !important;
-    }
-    .mdc-notched-outline__notch{
-      border-block: 2px solid rgb(24, 115, 189) !important;
-    }
-    .mdc-notched-outline__trailing{
-      border-block: 2px solid rgb(24, 115, 189) !important;
-      border-right:2px solid rgb(24, 115, 189)  !important;
-      border-top-right-radius: 1rem !important;
-      border-bottom-right-radius: 1rem !important;
-    }
-    .mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
-      padding-top: 0.5rem !important;
-    }
-    .mat-mdc-form-field-subscript-wrapper{
-      height: 0rem !important;
-    }
-    .mat-mdc-text-field-wrapper{
-      height: 2.5rem !important;
-     
-      .mat-mdc-form-field-flex {
-        height: 100% !important;
-        .mdc-text-field--outlined .mat-mdc-form-field-infix{
-          height: 2rem !important;
-          padding-bottom: 0rem;
-          padding-top: 0rem;
-          min-width: 2rem;
-          .mat-mdc-form-field{
-            height: 100%;
-          }
-        }
-      }
-    }
-  }
-
-  .mail-filter-option{
-    &-btn{
-      .mat-mdc-menu-item {
-        min-height: 2rem !important;
-        height: 2rem !important;
-      } 
-    }
-  }
-
- 
-.mail-body-details-body{
-  .mat-mdc-tab-body-wrapper{
-    height: 90% !important;
-  }
+  display: none;
 }
 
-.text-area{
-  .mdc-notched-outline__leading{
+.fdt-input-font .mdc-text-field__input {
+  font-size: 0.9rem !important;
+}
+.register-container .register-container__form .mdc-text-field__input {
+  font-size: 0.8rem !important;
+}
+
+.fdt-input-border .mdc-text-field {
+  border: none;
+  border-radius: 7px !important;
+  background-color: $color-white !important;
+  height: 3rem;
+}
+
+.dropdown,
+.textfield {
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: 0.3rem !important;
+  }
+  .mdc-notched-outline__leading {
     border-block: 1px solid rgb(200, 198, 198) !important;
-    border-left:1px solid rgb(200, 198, 198)  !important;
+    border-left: 1px solid rgb(200, 198, 198) !important;
     border-top-left-radius: 0.6rem !important;
     border-bottom-left-radius: 0.6rem !important;
     //border-radius: 5rem !important;
   }
-  .mdc-notched-outline__notch{
+  .mdc-notched-outline__notch {
     border-block: 1px solid rgb(200, 198, 198) !important;
   }
-  .mdc-notched-outline__trailing{
+  .mdc-notched-outline__trailing {
     border-block: 1px solid rgb(200, 198, 198) !important;
-    border-right:1px solid rgb(200, 198, 198)  !important;
+    border-right: 1px solid rgb(200, 198, 198) !important;
+    border-top-right-radius: 0.6rem !important;
+    border-bottom-right-radius: 0.6rem !important;
+  }
+  .mat-mdc-text-field-wrapper {
+    height: 2rem !important;
+
+    font-size: 0.95rem;
+    .mat-mdc-form-field-flex {
+      height: 100% !important;
+      .mdc-text-field--outlined .mat-mdc-form-field-infix {
+        height: 2rem !important;
+        padding-bottom: 0rem;
+        padding-top: 0rem;
+        min-width: 2rem;
+        .mat-mdc-form-field {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.searchBar {
+  color: black;
+  .mdc-text-field--outlined .mdc-notched-outline{
+    z-index: 0;
+  }
+  .mdc-notched-outline__leading {
+    // border-block: 2px solid rgb(24, 115, 189) !important;
+    // border-left:2px solid rgb(24, 115, 189)  !important;
+    background-color: white;
+    border-top-left-radius: 2rem !important;
+    border-bottom-left-radius: 2rem !important;
+    color: black;
+
+    //border-radius: 5rem !important;
+  }
+  .mdc-notched-outline__notch {
+    border-block: 2px solid rgb(24, 115, 189) !important;
+    color: black;
+
+    background-color: white;
+  }
+  .mdc-notched-outline__trailing {
+    background-color: white;
+    color: black;
+
+    // border-block: 2px solid rgb(24, 115, 189) !important;
+    // border-right:2px solid rgb(24, 115, 189)  !important;
+    border-top-right-radius: 1rem !important;
+    border-bottom-right-radius: 1rem !important;
+  }
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: 0.5rem !important;
+  }
+  .mat-mdc-form-field-subscript-wrapper {
+    height: 0rem !important;
+  }
+  .mat-mdc-text-field-wrapper {
+    height: 2.5rem !important;
+
+    .mat-mdc-form-field-flex {
+      height: 100% !important;
+      .mdc-text-field--outlined .mat-mdc-form-field-infix {
+        height: 2rem !important;
+        padding-bottom: 0rem;
+        padding-top: 0rem;
+        min-width: 2rem;
+        .mat-mdc-form-field {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.mail-filter-option {
+  &-btn {
+    .mat-mdc-menu-item {
+      min-height: 2rem !important;
+      height: 2rem !important;
+    }
+  }
+}
+
+.mail-body-details-body {
+  .mat-mdc-tab-body-wrapper {
+    height: 90% !important;
+  }
+}
+
+.text-area {
+  .mdc-notched-outline__leading {
+    border-block: 1px solid rgb(200, 198, 198) !important;
+    border-left: 1px solid rgb(200, 198, 198) !important;
+    border-top-left-radius: 0.6rem !important;
+    border-bottom-left-radius: 0.6rem !important;
+    //border-radius: 5rem !important;
+  }
+  .mdc-notched-outline__notch {
+    border-block: 1px solid rgb(200, 198, 198) !important;
+  }
+  .mdc-notched-outline__trailing {
+    border-block: 1px solid rgb(200, 198, 198) !important;
+    border-right: 1px solid rgb(200, 198, 198) !important;
     border-top-right-radius: 0.6rem !important;
     border-bottom-right-radius: 0.6rem !important;
   }
 }
- 
+.mat-mdc-dialog-surface .mdc-dialog__surface{
+  border-radius: 2rem !important;
+  }

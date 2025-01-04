@@ -1,10 +1,14 @@
+@import "../../../../shared/styles/_variables.scss";
 .mail-list-cell {
   height: 5.0rem;
   background-color: #ffffff;
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   &:hover {
-    background-color: #d5e0ff;
+    background-color: #f1f4fc;
+    transform: translateY(-5px);  /* Move the div upwards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }&:hover .mail-list-cell-delete-icon {
     display: flex; /* Show the child div when the parent is hovered */
     align-items: center;
@@ -35,7 +39,7 @@
     width: 70%;
     &-title {
       font-weight: 700;
-      color: rgb(24, 115, 189);
+      color: $color-primary;
     }
     &-desc {
       white-space: nowrap;

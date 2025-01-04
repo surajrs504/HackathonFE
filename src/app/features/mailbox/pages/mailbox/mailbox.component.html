@@ -1,6 +1,9 @@
 <div class="main-container d-flex flex-column w-100 h-100">
   <!-- <div class="top-bar-container w-100">top bar</div> -->
-  <div class="text-center position-absolute top-50 start-50 z-1" *ngIf="isLoading">
+  <div
+    class="text-center position-absolute top-50 start-50 z-1"
+    *ngIf="isLoading"
+  >
     <div
       class="spinner-border"
       style="width: 3.5rem; height: 3.5rem"
@@ -16,28 +19,41 @@
     <div class="w-20">
       <img
         class="w-50"
-        src="../../../../../assets/images/NV-MAIL-LOGO.png"
+        src="../../../../../assets/images/NV-MAIL-LOGO-3.png"
         alt=""
-      /> 
+      />
       <!-- <a href="mailto:surajrs504@gmail.com">click for mail</a>
            <button (click)="sendEmail()">Send Email</button> -->
     </div>
-   <div class="w-60"> <app-mail-search-bar [mail_data]="mail_data"></app-mail-search-bar></div>
+    <div class="w-60">
+      <app-mail-search-bar
+        [mail_data]="mail_data"
+        (selectedMail)="handleSearchSelectedMail($event)"
+      ></app-mail-search-bar>
+    </div>
     <div class="w-20 d-flex justify-content-end align-items-center">
+      <span class="header-username">Hi Madhusudan</span>
       <div (click)="handleShowProfile()">
-        <span class="px-1"> <img src="assets/icons/common/person_circle.svg" /></span>
+        <span class="px-1">
+          <img src="assets/icons/common/person_circle_white.svg"
+        /></span>
       </div>
     </div>
   </div>
+
   <div class="mail-container p-1 h-90 w-100 d-flex">
+    <div
+      *ngIf="isInboxEmpty"
+      class="w-100 h-100 position-absolute top-50 start-50 z-1"
+    >
+      <img class="empty-inbox" src="assets/images/empty-inbox.png" />
+    </div>
     <div class="w-20 h-100 py-2 px-1">
       <div class="py-1">
-       
         <div
           class="mail-list-cell d-flex w-100 justify-content-between align-items-center px-3"
-        > <div class="mail-preference-header">
-          Mail Preference
-        </div>
+        >
+          <div class="mail-preference-header">Mail Preference</div>
           <div (click)="handleUserGroupSetting()">
             <span matTooltip="Edit Mail Preference" class="px-1">
               <img src="assets/icons/common/user_setting.svg"
@@ -56,15 +72,22 @@
                 matInput
                 [formControl]="groupListControl"
                 [matAutocomplete]="auto"
+                (selectionchange)="handleGroupSearch()"
               />
-              <mat-autocomplete #auto="matAutocomplete">
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="handleGroupSelection()"
+                [displayWith]="displayGroupWith"
+              >
                 @for (option of filteredGroupOptions | async; track option) {
-                <mat-option [value]="option.group_name">{{ option.group_name }} </mat-option>
+                <mat-option [value]="option"
+                  >{{ option.group_name }}
+                </mat-option>
                 }
               </mat-autocomplete>
-              <mat-icon matSuffix>search</mat-icon>
+              <mat-icon class="color-primary" matSuffix>search</mat-icon>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <!-- <mat-form-field appearance="outline">
               <input
                 type="text"
                 placeholder="Sub Group"
@@ -77,11 +100,10 @@
                 <mat-option [value]="option">{{ option }}</mat-option>
                 }
               </mat-autocomplete>
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
+              <mat-icon class="color-primary" matSuffix>search</mat-icon>
+            </mat-form-field> -->
           </form>
-
-          <div class="frequent-group-container">
+          <!-- <div class="frequent-group-container">
             <mat-chip-set
               matTooltip="Frequent groups"
               class="example-chip"
@@ -100,12 +122,13 @@
               >
               }
             </mat-chip-set>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
+
     <div class="w-30 h-100 px-1 py-2 mail-container-list">
-      <div class="py-1 pe-4 ps-2">
+      <!-- <div class="py-1 pe-4 ps-2">
         <div
           class="mail-list-cell d-flex w-100 px-1 d-flex align-items-center justify-content-between"
         >
@@ -125,11 +148,20 @@
               <mat-icon matTooltip="Select">filter_none</mat-icon>
             </div>
             <div class="px-1 d-flex align-items-center">
-              <mat-icon matTooltip="Filter" [matMenuTriggerFor]="afterMenu"
-                >filter_list</mat-icon
+              <mat-icon
+                class="d-flex"
+                matTooltip="Filter"
+                [matMenuTriggerFor]="afterMenu"
               >
+                <img src="assets/icons/common/filter.svg"
+              /></mat-icon>
+
               <mat-menu #afterMenu="matMenu" xPosition="after">
-                <button class="mail-filter-option-btn" mat-menu-item>
+                <button
+                  class="mail-filter-option-btn"
+                  mat-menu-item
+                  (click)="handleFilterMailList('flagged')"
+                >
                   <span>
                     <img
                       class="mail-filter-option-icon"
@@ -137,7 +169,11 @@
                   /></span>
                   <span class="px-2 mail-filter-option">Flagged</span>
                 </button>
-                <button class="mail-filter-option-btn" mat-menu-item>
+                <button
+                  class="mail-filter-option-btn"
+                  mat-menu-item
+                  (click)="handleFilterMailList('hasFiles')"
+                >
                   <span>
                     <img
                       class="mail-filter-option-icon"
@@ -145,13 +181,29 @@
                   /></span>
                   <span class="px-2 mail-filter-option">Has files</span>
                 </button>
-                <button class="mail-filter-option-btn" mat-menu-item>
+                <button
+                  class="mail-filter-option-btn"
+                  mat-menu-item
+                  (click)="handleFilterMailList('unread')"
+                >
                   <span>
                     <img
                       class="mail-filter-option-icon"
                       src="assets/icons/common/unread_mail.svg"
                   /></span>
                   <span class="px-2 mail-filter-option">Unread</span>
+                </button>
+                <button
+                  class="mail-filter-option-btn"
+                  mat-menu-item
+                  (click)="handleFilterMailList('clear')"
+                >
+                  <span>
+                    <img
+                      class="mail-filter-option-icon"
+                      src="assets/icons/common/filter_off.svg"
+                  /></span>
+                  <span class="px-2 mail-filter-option">Clear</span>
                 </button>
               </mat-menu>
             </div>
@@ -167,11 +219,11 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="h-90 overflow-y-auto">
+      </div> -->
+      <div class="h-100 overflow-y-auto">
         <div
           class="py-1 px-2"
-          *ngFor="let mail of mail_data"
+          *ngFor="let mail of filterdMailList"
           (click)="mailClicked(mail)"
         >
           <div [ngClass]="{ highlight: mail === selectedMail }">
@@ -182,11 +234,10 @@
             ></app-mail-list-cell>
           </div>
         </div>
-      
       </div>
     </div>
     <div class="w-50 h-100 mail-container-body">
-      <div class="mail-body py-2 overflow-y-auto">
+      <div class="mail-body py-2 overflow-y-auto" *ngIf="selectedMail">
         <app-mail-body [selectedMail]="selectedMail"></app-mail-body>
         <!-- <div class="mail-thread-list-container">
           <div class="mail-thread-list-item d-flex">

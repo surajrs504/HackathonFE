@@ -1,32 +1,37 @@
-<!-- <div
-  class="profile-container p-2 d-flex align-items-center justify-content-center flex-column"
->
-  <div class="icon">
-    <div class="icon-body">
-      <mat-icon>person</mat-icon>
-    </div>
+<div class="main-container d-flex justify-content-center align-items-center">
+  <div class="main-container-bg">
+    <div class="main-container-bg-grey"></div>
+    <div class="main-container-bg-white"></div>
   </div>
-  <h3>User name</h3>
-  <div>user details</div>
-  <div><button mat-button >Sign Out</button></div>
-</div> -->
+  <div
+    class="main-container-profile d-flex flex-column justify-content-center align-items-center p-2"
+  >
+    <div class="main-container-profile-pic">
+      <mat-icon class="main-container-profile-pic-icon">person</mat-icon>
+    </div>
+    <div class="main-container-profile-name py-2">Madhusudan Sharma</div>
+    <div
+      class="main-container-profile-emailId w-100 py-2 px-3 d-flex align-items-center"
+    >
+      <div class="px-1 main-container-profile-emailId-icon">
+        <img src="assets/icons/common/email_symbol.svg" />
+      </div>
 
-<div class="contact-card">
-  <div class="header">
-    <div class="icon-body">
-      <mat-icon>person</mat-icon>
+      <div class="px-2">{{email}}</div>
     </div>
-    <h3>Amanda Smith</h3>
-    <span class="contact-status">In contacts</span>
-  </div>
-  <div class="actions">
-   
-   
-  </div>
-  <div class="contact-code">
-  <div>
-    <button>Sign out</button>
-  </div>
+    <!-- <div
+      class="main-container-profile-Companyname w-100 py-2 px-3 d-flex align-items-center"
+    >
+      <div class="main-container-profile-emailId-icon px-1">
+        <img src="assets/icons/common/building.svg" />
+      </div>
+      <div class="px-2">Novigo Soltion .pvt.ltd</div>
+    </div> -->
+    <div class="main-container-profile-signOut py-3">
+      <button mat-stroked-button class="signOutBtn" (click)="logout()">
+        Sign out
+        <span class="px-1"> <img src="assets/icons/common/logout.svg" /></span>
+      </button>
+    </div>
   </div>
 </div>
-

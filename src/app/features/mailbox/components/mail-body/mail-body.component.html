@@ -1,5 +1,5 @@
 <div class="mail-body-subject-container" *ngIf="selectedMail">
-  <div class="mail-body-subject">{{ selectedMail["subject"] }}</div>
+  <div class="mail-body-subject">{{ selectedMail["message"]["subject"] }}</div>
 </div>
 
 <div
@@ -23,14 +23,14 @@
         >
           <div>To: {{ getToRecepients() }}</div>
           <div class="d-flex">
-            <div class="px-2">
+            <!-- <div class="px-2">
               <span class="px-1">
                 <img src="assets/icons/common/delete.svg"
               /></span>
-            </div>
-            <div class="px-2">
+            </div> -->
+            <!-- <div class="px-2">
               <span> <img src="assets/icons/common/flag.svg" /></span>
-            </div>
+            </div> -->
             <div class="px-2">
               <mat-icon
                 mat-icon
@@ -56,6 +56,7 @@
 </div>
 
 <div class="mail-body-details-container" *ngIf="selectedMail">
+ 
   <div class="mail-body-details">
     <div class="mail-body-details-ids">
       <div class="mail-body-details-ids-icon">
@@ -67,23 +68,33 @@
             {{ getFirstLetter() }}
           </div>
         </div>
+        <!-- <div
+          class="mail-body-details-ids-icon-body"
+          [style.background-color]="getLetterColor('M')"
+        >
+          <div class="mail-body-details-ids-icon-body-letter">
+           M
+          </div>
+        </div> -->
       </div>
       <div class="mail-body-details-ids-names">
         <div
           class="mail-body-details-ids-names-sender d-flex justify-content-between align-items-center"
         >
-          <div>{{ selectedMail["sender"]["emailAddress"]["name"] }}</div>
+          <div>{{ selectedMail["message"]["sender"]["emailAddress"]["address"] }}</div>
+          
+
           <div class="d-flex">
-            <div class="px-2">
+            <!-- <div class="px-2">
               <span class="px-1">
                 <img
                   (click)="handleDeleteMail(selectedMail)"
                   src="assets/icons/common/delete.svg"
               /></span>
-            </div>
-            <div class="px-2">
+            </div> -->
+            <!-- <div class="px-2">
               <span> <img src="assets/icons/common/flag.svg" /></span>
-            </div>
+            </div> -->
             <div *ngIf="showEditOption" class="px-2">
               <mat-icon
                 mat-icon
@@ -105,7 +116,8 @@
         </div>
       </div>
     </div>
-    <div class="mail-body-details-body h-90">
+    <div class="mail-body-details-body h-90 position-relative">
+    
       <mat-tab-group
         [classList]="'w-100'"
         mat-stretch-tabs
@@ -115,14 +127,11 @@
         <mat-tab label="Mail"
           ><div
             class="p-4 w- overflow-x-auto"
-            [innerHTML]="selectedMail['body']['content']"
+            [innerHTML]="selectedMail['message']['body']['content']"
           ></div>
         </mat-tab>
         <mat-tab label="Summary">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem at
-          unde, recusandae laborum reiciendis expedita accusamus molestias
-          dolorem delectus illum sit a, repellendus ipsa ipsam officiis enim
-          provident earum sequi?
+          {{mailSummary}}
           <div class="loader position-absolute z-1" *ngIf="isLoading">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>

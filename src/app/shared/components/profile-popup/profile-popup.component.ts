@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { AuthService } from '../../../core/services/auth/auth.service';
 @Component({
   selector: 'app-profile-popup',
   standalone: true,
@@ -10,10 +11,10 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './profile-popup.component.scss'
 })
 export class ProfilePopupComponent {
-   data: any = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    phone: '+1 234 567 890',
-    profilePic: 'https://www.w3schools.com/w3images/avatar2.png' // Replace with the actual image URL
-  };
+  email="Madhusudan.Sharma@novigo-solutions.com"
+  private authSerivce=inject(AuthService)
+   
+  logout(){
+    this.authSerivce.logout();
+  }
 }

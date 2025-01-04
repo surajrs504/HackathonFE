@@ -1,3 +1,5 @@
+@import "../../../../shared/styles/_variables.scss";
+
 .main-container {
   width: 40rem;
   height: 30rem;
@@ -46,4 +48,13 @@
 }
 .subGroupContainer{
   height: 21rem;
+}
+
+.spinner-border{
+  color: $color-primary !important;
+}
+
+.button-container{
+  border: 1px solid #ada9a9;
+  border-radius: 1rem;
 }

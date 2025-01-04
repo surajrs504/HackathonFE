@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import mail_data from '../../../core/data/mail_data.json'
+import mail_data from '../../../core/data/mail_data.json';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
@@ -8,8 +8,8 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class MailboxService {
-  apiUrl=environment.apiUrl
-  constructor( private http :HttpClient) {}
+  apiUrl = environment.apiUrl;
+  constructor(private http: HttpClient) {}
 
   deleteSingleMail(mailDetails: any) {}
 
@@ -28,38 +28,37 @@ export class MailboxService {
     ]);
   }
 
-  getGroupList(){
-    return this.http.get(`${this.apiUrl}NVPreference/get_groups`)
+  getGroupList() {
+    return this.http.get(`${this.apiUrl}NVPreference/get_groups`);
   }
 
-  getSubGroupList(){
+  getSubGroupList() {
     return of(['Priority', 'Urgency', 'Client', 'Team']);
   }
 
-  getMailList(){
-  // return of(mail_data)
-  return this.http.get(`${this.apiUrl}NVMail/getMail`)
+  getMailList() {
+    // return of(mail_data)
+    return this.http.get(`${this.apiUrl}NVMail/getMail`);
   }
 
-  getMailSummary(mailDetails:any){
-   return of('Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem mollitia nemo illum ut veniam cum voluptatum id unde vero porro esse quae officia praesentium fugit tenetur temporibus iste, dolore voluptatibus.')
+  getMailSummary(mailDetails: any) {
+    return this.http.post<any>(`${this.apiUrl}NVGroup/getMailSummary`, mailDetails);
   }
 
-  getMailAIResponse(mailDetails:any){
-   return  of('Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem mollitia nemo illum ut veniam cum voluptatum id unde vero porro esse quae officia praesentium fugit tenetur temporibus iste, dolore voluptatibus.')
+  getMailAIResponse(mailDetails: any) {
+    return this.http.post<any>(`${this.apiUrl}/NVGroup/getMailResponse`, mailDetails);
   }
 
-  addNewGroup(data:any){
-    return this.http.post(`${this.apiUrl}NVPreference/addGroup`,data)
+  addNewGroup(data: any) {
+    return this.http.post(`${this.apiUrl}NVPreference/addGroup`, data);
   }
 
-  editGroup(data:any){
-    return this.http.put(`${this.apiUrl}NVPreference/edit_group`,data)
+  editGroup(data: any) {
+    return this.http.put(`${this.apiUrl}NVPreference/edit_group`, data);
   }
 
- 
-  getSubGroupListDesc(){
-    return of( [
+  getSubGroupListDesc() {
+    return of([
       {
         field: 'Priority',
         description:
@@ -85,10 +84,15 @@ export class MailboxService {
         description:
           'Describes the larger initiative or goal that a task or set of tasks is contributing to, often including specific objectives, timelines, and deliverables.',
       },
-    ])
+    ]);
   }
 
-  deleteGroup(group_id:number){
-   return this.http.delete(`${this.apiUrl}NVPreference/delete_group/${group_id}`)
+  deleteGroup(group_id: number) {
+    return this.http.delete(
+      `${this.apiUrl}NVPreference/delete_group/${group_id}`
+    );
+  }
+  getMailByGroup(id: any) {
+    return this.http.get(`${this.apiUrl}NVGroup/getGroupEmail?group_id=${id}`);
   }
 }

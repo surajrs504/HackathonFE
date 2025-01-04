@@ -1,10 +1,12 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,8 +35,9 @@ import { CommonModule } from '@angular/common';
 })
 export class MailSearchBarComponent implements OnChanges {
   @Input('mail_data') mail_data: any;
+  @Output('selectedMail') selectedMail = new EventEmitter<any>();
 
-  searchMailControl = new FormControl('');
+  searchMailControl = new FormControl();
   filteredMailSearchOptions: Observable<any[]> | undefined;
 
   private commonService = inject(CommonService);
@@ -50,7 +53,7 @@ export class MailSearchBarComponent implements OnChanges {
   }
 
   getFirstLetter(mailDetails: any) {
-    const letter = mailDetails['sender']['emailAddress']['name'];
+    const letter = mailDetails["message"]["sender"]["emailAddress"]["address"];
     return letter.charAt(0).toUpperCase();
   }
 
@@ -59,13 +62,32 @@ export class MailSearchBarComponent implements OnChanges {
   }
 
   private _filterMailSearch(value: any) {
-    const filterValue = value.toLowerCase();
+    let filterValue = '';
+    if (typeof value !== 'string') {
+      return;
+    } else {
+      filterValue = value.toLowerCase();
+    }
     return this.mail_data?.filter(
       (option: any) =>
-        option['sender']['emailAddress']['name']
+        option["message"]["sender"]["emailAddress"]["address"]
           .toLowerCase()
           .includes(filterValue) ||
-        option['subject'].toLowerCase().includes(filterValue)
+        option["message"]['subject'].toLowerCase().includes(filterValue)
     );
+  }
+  displayMailWith(option: any): string {
+    return option ? option["message"]["sender"]["emailAddress"]["address"] : '';
+  }
+
+  handleMailSelection(data: any) {
+    console.log('selectmail', this.searchMailControl.value, data);
+    this.selectedMail.emit(this.searchMailControl.value);
+    // this.searchMailControl.setValue(
+    //   this.searchMailControl.value['sender']['emailAddress']['name']
+    // );
+  }
+  handled(data: any) {
+    return '';
   }
 }

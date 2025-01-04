@@ -21,7 +21,7 @@ export class MailListCellComponent {
   constructor() {}
 
   getFirstLetter() {
-    const letter = this.cellDetail['sender']['emailAddress']['name'];
+    const letter = this.cellDetail["message"]["sender"]["emailAddress"]["address"];
     return letter.charAt(0).toUpperCase();
   }
   getTime(dateString: any) {

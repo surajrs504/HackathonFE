@@ -12,11 +12,14 @@
         align-items: center;
         justify-content: center;
       }
+      &-name{
+        font-size: 0.85rem;
+      }
       &-desc {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: grey;
       }
     }
@@ -33,3 +36,4 @@
   .mat-mdc-option.mdc-list-item{
     height: 3rem !important;
   }
+

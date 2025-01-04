@@ -64,6 +64,8 @@ export class UserPreferenceSettingsComponent implements OnInit {
   seletedSubGroup: any;
   selectedTab = 0;
 
+  isLoading = false;
+
   constructor(
     public userPreferenceRef: MatDialogRef<UserPreferenceSettingsComponent>
   ) {}
@@ -75,6 +77,7 @@ export class UserPreferenceSettingsComponent implements OnInit {
   }
 
   getGroupList() {
+    this.isLoading = true;
     this.mailBoxService.getGroupList().subscribe({
       next: (response: any) => {
         this.groupList = response.groups;
@@ -91,6 +94,7 @@ export class UserPreferenceSettingsComponent implements OnInit {
         );
       },
       error: (error) => {},
+      complete: () => (this.isLoading = false),
     });
   }
 
@@ -137,11 +141,12 @@ export class UserPreferenceSettingsComponent implements OnInit {
     this.isAddNewGroup = false;
   }
 
-  handleDeleteGroup(){
+  handleDeleteGroup() {
     const selectedGroup = this.groupListControl?.value;
     const selectedGroupData = this.groupList.find(
       (group) => group.group_name === selectedGroup
     );
+    this.isLoading = true;
     this.mailBoxService.deleteGroup(selectedGroupData?.id).subscribe({
       next: (response) => {
         this.getGroupList();
@@ -150,7 +155,8 @@ export class UserPreferenceSettingsComponent implements OnInit {
       error: (error) => {
         this.notificationService.showError('Somthing went wrong', 5);
       },
-    })
+      complete: () => (this.isLoading = false),
+    });
   }
 
   handleGroupSelection(selection: any) {
@@ -187,7 +193,7 @@ export class UserPreferenceSettingsComponent implements OnInit {
         group_name: newGroupName,
         description: newGroupDescripion,
       };
-
+      this.isLoading = true;
       this.mailBoxService.editGroup(data).subscribe({
         next: (response) => {
           this.getGroupList();
@@ -196,20 +202,25 @@ export class UserPreferenceSettingsComponent implements OnInit {
         error: (error) => {
           this.notificationService.showError('Somthing went wrong', 5);
         },
+        complete: () => (this.isLoading = false),
       });
     }
     if (this.isAddNewGroup) {
       const newGroupName = this.groupName;
       const newGroupDescripion = this.groupDescription;
+      const data = {
+        group_name: newGroupName,
+        description: newGroupDescripion,
+      };
       console.log('ADD', newGroupName, newGroupDescripion);
-      // this.mailBoxService.addNewGroup().subscribe({
-      //   next: (response) => {
-      //     this.notificationService.showSuccess('Group edited succesfully', 5);
-      //   },
-      //   error: (error) => {
-      //     this.notificationService.showError('Somthing went wrong', 5);
-      //   },
-      // });
+      this.mailBoxService.addNewGroup(data).subscribe({
+        next: (response) => {
+          this.notificationService.showSuccess('Group added succesfully', 5);
+        },
+        error: (error) => {
+          this.notificationService.showError('Somthing went wrong', 5);
+        },
+      });
       this.isAddNewGroup = false;
       this.isGroupEdit = false;
       this.groupName = '';

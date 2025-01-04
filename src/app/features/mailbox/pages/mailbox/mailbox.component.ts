@@ -37,7 +37,7 @@ import {
   AuthenticationResult,
   InteractionRequiredAuthError,
 } from '@azure/msal-browser';
-import { MSALInstanceFactory } from '../../../auth/components/login/login.component';
+import { MSALInstanceFactory } from '../../../../app.config';
 export interface frequentGroupList {
   name: string;
 }
@@ -80,8 +80,9 @@ export interface frequentGroupList {
 })
 export class MailboxComponent implements OnInit {
   mail_data: any;
+  filterdMailList: any;
   selectedMail: any;
-  groupListControl = new FormControl('');
+  groupListControl = new FormControl();
   subGroupListControl = new FormControl('');
   searchMailControl = new FormControl('');
   groupList: any[] = [];
@@ -96,6 +97,8 @@ export class MailboxComponent implements OnInit {
 
   frequentGroupList: frequentGroupList[] = [];
 
+  isInboxEmpty = false;
+
   readonly userGroupDialog = inject(MatDialog);
   readonly profileDetailsDialog = inject(MatDialog);
   private notificationService = inject(NotificationService);
@@ -109,7 +112,7 @@ export class MailboxComponent implements OnInit {
     this.getGroupList();
     this.getSubGroupList();
     this.getMailList();
-   
+
     this.filteredSubGroupOptions = this.subGroupListControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterSubGroups(value || ''))
@@ -121,8 +124,13 @@ export class MailboxComponent implements OnInit {
   }
 
   private _filterGroups(value: string) {
-    const filterValue = value.toLowerCase();
-    if(!this.groupList)return [""]
+    let filterValue = '';
+    if (typeof value !== 'string') {
+      return [];
+    } else {
+      filterValue = value.toLowerCase();
+    }
+    if (!this.groupList) return [''];
     return this.groupList.filter((option) =>
       option.group_name.toLowerCase().includes(filterValue)
     );
@@ -172,15 +180,19 @@ export class MailboxComponent implements OnInit {
     this.mailBoxService.getGroupList().subscribe({
       next: (data: any) => {
         this.groupList = data.groups;
+
         this.filteredGroupOptions = this.groupListControl.valueChanges.pipe(
           startWith(''),
           map((value) => this._filterGroups(value || ''))
         );
+        
+
+        // this.groupListControl.setValue(this.groupList[0]);
       },
       error: (error) => {},
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
   getSubGroupList() {
@@ -195,15 +207,33 @@ export class MailboxComponent implements OnInit {
   //mail list section
   getMailList() {
     this.isLoading = true;
-    this.mailBoxService.getMailList().subscribe({
+    // this.mailBoxService.getMailList().subscribe({
+    //   next: (data: any) => {
+    //     this.mail_data = data.value;
+    //     this.filterdMailList = this.mail_data;
+    //     this.selectedMail = this.mail_data[0];
+    //   },
+    //   error: (error) => {},
+    //   complete: () => {
+    //     this.isLoading = false;
+    //   },
+    // });
+
+    this.mailBoxService.getMailByGroup('all').subscribe({
       next: (data: any) => {
-        this.mail_data = data.value;
-        this.selectedMail = this.mail_data[0];
+        if (data && data.length > 0) {
+          this.mail_data = data;
+          this.filterdMailList = this.mail_data;
+          this.selectedMail = this.mail_data[0];
+        } else {
+          this.isInboxEmpty = true;
+          return;
+        }
       },
       error: (error) => {},
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -216,4 +246,93 @@ export class MailboxComponent implements OnInit {
   }
 
   sendEmail() {}
+
+  handleSearchSelectedMail(mailData: any) {
+    console.log('maildata', mailData);
+    if (mailData) {
+      this.selectedMail = mailData;
+    }
+  }
+
+  handleFilterMailList(filterParam: string) {
+    this.isInboxEmpty = false;
+    if (filterParam === 'flagged') {
+      this.filterdMailList = this.mail_data.filter(
+        (mail: any) => mail.flag.flagStatus !== 'notFlagged'
+      );
+      if (this.filterdMailList.length === 0) {
+        this.isInboxEmpty = true;
+      }
+      this.selectedMail = this.filterdMailList[0];
+      return;
+    }
+
+    if (filterParam === 'unread') {
+      this.filterdMailList = this.mail_data.filter(
+        (mail: any) => mail.isRead === false
+      );
+      if (this.filterdMailList.length === 0) {
+        this.isInboxEmpty = true;
+      }
+      this.selectedMail = this.filterdMailList[0];
+      return;
+    }
+
+    if (filterParam === 'hasFiles') {
+      this.filterdMailList = this.mail_data.filter(
+        (mail: any) => mail.hasAttachments === true
+      );
+      if (this.filterdMailList.length === 0) {
+        this.isInboxEmpty = true;
+      }
+      this.selectedMail = this.filterdMailList[0];
+      return;
+    }
+    if (filterParam === 'clear') {
+      this.filterdMailList = this.mail_data;
+      this.selectedMail = this.filterdMailList[0];
+      return;
+    }
+  }
+
+  handleGroupSearch(){
+    if(this.groupListControl.value===""){
+      this.getMailByGroup("all")
+    }
+  }
+
+  handleGroupSelection() {
+   
+    console.log('tss', this.groupListControl.value);
+   this.getMailByGroup(this.groupListControl?.value?.id)
+  }
+
+  getMailByGroup(id:any){
+    this.isLoading = true;
+    this.isInboxEmpty = false;
+    this.mailBoxService
+    .getMailByGroup(id)
+    .subscribe({
+      next: (data: any) => {
+        console.log(data, 'fddf');
+        if (data.length === 0) {
+          this.filterdMailList = undefined;
+          this.selectedMail = undefined;
+
+          this.isInboxEmpty = true;
+        } else {
+          this.filterdMailList = data;
+          this.selectedMail = this.filterdMailList[0];
+        }
+      },
+      error: (error) => {},
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  displayGroupWith(option: any) {
+    return option ? option.group_name : '';
+  }
 }

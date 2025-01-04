@@ -56,21 +56,21 @@ export class MailBodyComponent implements OnChanges {
     ],
   };
   showEditOption = false;
-  isLoading=false
+  isLoading = false;
 
   constructor(private fb: FormBuilder) {}
 
   getCCRecepients() {
     let a = '';
-    this.selectedMail['ccRecipients']?.forEach((mail: any) => {
-      a += mail['emailAddress']['address'];
+    this.selectedMail['message']['ccRecipients']?.forEach((mail: any) => {
+      a += ' ' + mail['emailAddress']['address'];
     });
     return a;
   }
   getToRecepients() {
     let a = '';
-    this.selectedMail['toRecipients']?.forEach((mail: any) => {
-      a += mail['emailAddress']['address'];
+    this.selectedMail['message']['toRecipients']?.forEach((mail: any) => {
+      a += ' ' + mail['emailAddress']['address'];
     });
     return a;
   }
@@ -91,7 +91,8 @@ export class MailBodyComponent implements OnChanges {
   }
 
   getFirstLetter() {
-    const letter = this.selectedMail['sender']['emailAddress']['name'];
+    const letter =
+      this.selectedMail['message']['sender']['emailAddress']['address'];
     return letter.charAt(0).toUpperCase();
   }
 
@@ -125,31 +126,42 @@ export class MailBodyComponent implements OnChanges {
     this.showEditOption = false;
   }
   getMailAIResponse(mailDetails: any) {
-    this.mailBoxService.getMailAIResponse(mailDetails).subscribe({
-      next: (data) => {
-        this.emailContent = data;
-      },
-      error: (error) => {},
-    });
+    this.isLoading = true;
+    this.mailBoxService
+      .getMailAIResponse(mailDetails['message']['body'])
+      .subscribe({
+        next: (data) => {
+          this.emailContent = data.response;
+        },
+        error: (error) => {},
+        complete: () => (this.isLoading = false),
+      });
   }
   getMailSummary(mailDetails: any) {
-    this.mailBoxService.getMailSummary(mailDetails).subscribe({
+    const mailData = {
+      mail_body: mailDetails['message']['body']['content'],
+    };
+    this.isLoading = true;
+    this.mailBoxService.getMailSummary(mailData).subscribe({
       next: (data) => {
-        this.mailSummary = data;
+        this.mailSummary = data.summary;
       },
       error: (error) => {},
+      complete: () => (this.isLoading = false),
     });
   }
-  handleReplyMailEmailClient(){
-    const recipient = 'example@example.com'; // Recipient email
-    const subject = 'Subject of the email';
-    const body = 'Hello, this is the body of the email!'; // Email body content
-
+  handleReplyMailEmailClient() {
+    const recipient = this.getToRecepients(); // Recipient email
+    const subject = this.selectedMail['message']['subject'];
+    const body = this.emailContent.length===0? "AI generated response":this.emailContent; // Email body content
+    const ccRecipients = this.getCCRecepients();
     // Create the mailto URL
-    const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
+    const mailtoLink = `mailto:${recipient}?cc=${encodeURIComponent(
+      ccRecipients
+    )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // const mailtoLink = `body=${encodeURIComponent(body)}`;
+
     // Open the default email client with the pre-filled content
     window.location.href = mailtoLink;
   }
-
 }

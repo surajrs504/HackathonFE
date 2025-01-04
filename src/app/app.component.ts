@@ -10,7 +10,7 @@ import {
   AuthenticationResult,
   InteractionRequiredAuthError,
 } from '@azure/msal-browser';
-import { MSALInstanceFactory } from './features/auth/components/login/login.component';
+
 
 @Component({
   selector: 'app-root',
@@ -18,19 +18,7 @@ import { MSALInstanceFactory } from './features/auth/components/login/login.comp
   imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [
-    MsalService,
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useValue: {
-        loginFailedRoute: '/a/mailbox',
-      },
-    },
-  ],
+  
 })
 export class AppComponent implements OnInit {
   title = 'emailAutomationManagementFE';
@@ -73,6 +61,10 @@ export class AppComponent implements OnInit {
       .then((response) => {
         console.log('Access Token:', response.accessToken);
         localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem(
+          'homeAccountId',
+          response.account.homeAccountId
+        );
         // Store the token if needed and use it for API calls
       })
       .catch((error) => {

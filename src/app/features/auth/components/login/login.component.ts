@@ -23,21 +23,7 @@ import {
   MSAL_INSTANCE,
   MsalService,
 } from '@azure/msal-angular';
-const msalConfig: Configuration = {
-  auth: {
-    clientId: 'c3bea760-6fce-451b-bcc9-c62e1fa87d70', // Application (client) ID from Azure
-    authority:
-      'https://login.microsoftonline.com/d25e697e-9987-4146-87ba-800be6fd457c', // Directory (tenant) ID from Azure
-    redirectUri: 'https://nvmailautomation.netlify.app/a/mailbox', // Your app's redirect URI
-  },
-  cache: {
-    cacheLocation: 'localStorage', // Choose 'sessionStorage' or 'localStorage'
-    storeAuthStateInCookie: false, // Set to true for IE11 support
-  },
-};
-export function MSALInstanceFactory() {
-  return new PublicClientApplication(msalConfig);
-}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -52,17 +38,17 @@ export function MSALInstanceFactory() {
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [
-    MsalService,
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useValue: {
-        loginFailedRoute: '/login',
-      },
-    },
+    // MsalService,
+    // {
+    //   provide: MSAL_INSTANCE,
+    //   useFactory: MSALInstanceFactory,
+    // },
+    // {
+    //   provide: MSAL_GUARD_CONFIG,
+    //   useValue: {
+    //     loginFailedRoute: '/login',
+    //   },
+    // },
   ],
 })
 export class LoginComponent {
@@ -83,30 +69,14 @@ export class LoginComponent {
     private msalService: MsalService
   ) {}
 
-  ngOnInit(): void {
-    this.msalService.instance
-      .initialize()
-      .then(() => {
-        console.log('MSAL instance initialized');
-      })
-      .catch((error) => {
-        console.error('MSAL initialization failed:', error);
-      });
-  }
+  ngOnInit(): void {}
 
   login() {
-    this.msalService.loginRedirect().subscribe({
-      next: (response) => {
-        console.log('login success', response);
-      },
-      error: (err) => {
-        console.log('err', err);
-      },
-    });
+    this.authService.login();
   }
- 
+
   logout() {
-    this.msalService.logout();
+    this.authService.logout();
   }
 
   navigateToSignUp() {
